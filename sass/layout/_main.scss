@@ -1,0 +1,21 @@
+@use '../abstracts' as *;
+
+.main {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: $size-7;
+
+  padding: $size-7;
+  
+  section {
+    display: grid;
+    grid-template-rows: auto 1fr;
+    gap: $size-7;
+
+    .panels {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: $size-7;
+    }
+  }
+}
