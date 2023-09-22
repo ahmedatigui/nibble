@@ -1,9 +1,8 @@
 @use "../abstracts/" as *;
 
-body{
-    block-size: 100vh;
-    
+body {
+  block-size: 100vh;
 
-    display: grid;
-    grid-template-rows: auto 1fr;
+  display: grid;
+  grid-template-rows: auto 1fr;
 }

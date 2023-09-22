@@ -1,6 +1,8 @@
-import '@material/web/tabs/tabs.js';
-import '@material/web/tabs/primary-tab.js';
-import '@material/web/tabs/secondary-tab.js';
+"use client";
+
+import { Input, Button } from "@mui/material-next";
+
+const HTTP_verbs = ["GET", "HEAD", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"];
 
 export default function Home() {
   return (
@@ -9,7 +11,7 @@ export default function Home() {
         Nibble
       </header>
       <main className="main  | clr-on-surface">
-        <aside className="sidebar | bg-surface-container">
+        <aside className="sidebar | bg-surface-container large-rounding">
           <ul>
             <li>1.</li>
             <li>2.</li>
@@ -24,33 +26,16 @@ export default function Home() {
           </ul>
         </aside>
         <section className="">
-          <div className="panel action-panel | bg-surface-container">Input</div>
+          <div className="panel action-panel | bg-surface-container large-rounding">
+            <Input />
+            <Button className="button">Send</Button>
+          </div>
           <div className="panels">
-            <div className="panel | bg-surface-container">
-              <md-tabs>
-                <md-primary-tab>Video</md-primary-tab>
-                <md-primary-tab>Photos</md-primary-tab>
-                <md-primary-tab>Audio</md-primary-tab>
-              </md-tabs>
-
-              <md-tabs>
-                <md-secondary-tab>Birds</md-secondary-tab>
-                <md-secondary-tab>Cats</md-secondary-tab>
-                <md-secondary-tab>Dogs</md-secondary-tab>
-              </md-tabs>
+            <div className="panel | bg-surface-container large-rounding">
+              Resuest Panel
             </div>
-            <div className="panel | bg-surface-container">
-              <md-tabs>
-                <md-primary-tab>Video</md-primary-tab>
-                <md-primary-tab>Photos</md-primary-tab>
-                <md-primary-tab>Audio</md-primary-tab>
-              </md-tabs>
-
-              <md-tabs>
-                <md-secondary-tab>Birds</md-secondary-tab>
-                <md-secondary-tab>Cats</md-secondary-tab>
-                <md-secondary-tab>Dogs</md-secondary-tab>
-              </md-tabs>
+            <div className="panel | bg-surface-container large-rounding">
+              Response Panel
             </div>
           </div>
         </section>
