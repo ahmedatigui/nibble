@@ -1,8 +1,8 @@
-"use client";
+'use client';
 
-import { Input, Button } from "@mui/material-next";
-
-const HTTP_verbs = ["GET", "HEAD", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"];
+import UseSelect from '../Components/Select';
+import { Button, InputBase, Tabs, Tab, TabScrollButton } from '@mui/material-next';
+import Send from '@mui/icons-material/Send';
 
 export default function Home() {
   return (
@@ -25,14 +25,26 @@ export default function Home() {
             <li>D.</li>
           </ul>
         </aside>
-        <section className="">
-          <div className="panel action-panel | bg-surface-container large-rounding">
-            <Input />
-            <Button className="button">Send</Button>
+        <section>
+          <div className="panel action-panel | bg-surface-container large-rounding padding-2">
+            <div className="input-container | bg-surface-container-high">
+              {UseSelect()}
+              <InputBase
+                className="input"
+                placeholder="https://www.page.com/api/"
+              />
+              <Button className="button">
+                <Send />
+              </Button>
+            </div>
+            <div className="status">
+              <span>200 OK</span>
+              <span>75ms</span>
+              <span>2.14kb</span>
+            </div>
           </div>
           <div className="panels">
             <div className="panel | bg-surface-container large-rounding">
-              Resuest Panel
             </div>
             <div className="panel | bg-surface-container large-rounding">
               Response Panel

@@ -1,0 +1,9 @@
+@use "../abstracts/" as *;
+
+.input-container {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  background-color: map-get($map: $light, $key: "surface-container");
+  border: 1px solid map-get($map: $light, $key: "surface-container");
+  border-radius: $fully-rounding;
+}
