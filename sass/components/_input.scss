@@ -3,5 +3,5 @@
 .input {
   background-color: map-get($map: $light, $key: "surface-container-high");
   padding: $size-1 $size-4;
-  font-size: $fs-body-small;
+  font-size: $fs-body-medium;
 }
