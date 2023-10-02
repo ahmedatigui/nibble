@@ -1,45 +1,45 @@
-import * as React from 'react';
-import clsx from 'clsx';
+import * as React from "react";
+import clsx from "clsx";
 import {
   useSelect,
   SelectOptionDefinition,
   SelectProvider,
-} from '@mui/base/useSelect';
-import { useOption } from '@mui/base/useOption';
-import { styled } from '@mui/system';
-import UnfoldMoreRoundedIcon from '@mui/icons-material/UnfoldMoreRounded';
+} from "@mui/base/useSelect";
+import { useOption } from "@mui/base/useOption";
+import { styled } from "@mui/system";
+import UnfoldMoreRoundedIcon from "@mui/icons-material/UnfoldMoreRounded";
 
 export default function UseSelect() {
   return <CustomSelect placeholder="Select a color…" options={options} />;
 }
 
 const blue = {
-  100: '#DAECFF',
-  200: '#99CCF3',
-  400: '#3399FF',
-  500: '#007FFF',
-  600: '#0072E5',
-  900: '#003A75',
+  100: "#DAECFF",
+  200: "#99CCF3",
+  400: "#3399FF",
+  500: "#007FFF",
+  600: "#0072E5",
+  900: "#003A75",
 };
 
 const grey = {
-  50: '#f6f8fa',
-  100: '#eaeef2',
-  200: '#d0d7de',
-  300: '#afb8c1',
-  400: '#8c959f',
-  500: '#6e7781',
-  600: '#57606a',
-  700: '#424a53',
-  800: '#32383f',
-  900: '#24292f',
+  50: "#f6f8fa",
+  100: "#eaeef2",
+  200: "#d0d7de",
+  300: "#afb8c1",
+  400: "#8c959f",
+  500: "#6e7781",
+  600: "#57606a",
+  700: "#424a53",
+  800: "#32383f",
+  900: "#24292f",
 };
 
-const Root = styled('div')`
+const Root = styled("div")`
   position: relative;
 `;
 
-const Toggle = styled('button')(
+const Toggle = styled("button")(
   ({ theme }) => `
   font-family: IBM Plex Sans, sans-serif;
   font-size: 0.875rem;
@@ -49,12 +49,12 @@ const Toggle = styled('button')(
   border-radius: 8px;
   text-align: left;
   line-height: 1.5;
-  background: ${theme.palette.mode === 'dark' ? grey[900] : '#fff'};
-  border: 1px solid ${theme.palette.mode === 'dark' ? grey[700] : grey[200]};
-  color: ${theme.palette.mode === 'dark' ? grey[300] : grey[900]};
+  background: ${theme.palette.mode === "dark" ? grey[900] : "#fff"};
+  border: 1px solid ${theme.palette.mode === "dark" ? grey[700] : grey[200]};
+  color: ${theme.palette.mode === "dark" ? grey[300] : grey[900]};
   position: relative;
   box-shadow: 0px 2px 6px ${
-    theme.palette.mode === 'dark' ? 'rgba(0,0,0, 0.50)' : 'rgba(0,0,0, 0.05)'
+    theme.palette.mode === "dark" ? "rgba(0,0,0, 0.50)" : "rgba(0,0,0, 0.05)"
   };
 
   transition-property: all;
@@ -64,13 +64,13 @@ const Toggle = styled('button')(
   box-shadow: 0 0 0 2px var(--color) inset;
 
   &:hover {
-    background: ${theme.palette.mode === 'dark' ? grey[800] : grey[50]};
-    border-color: ${theme.palette.mode === 'dark' ? grey[600] : grey[300]};
+    background: ${theme.palette.mode === "dark" ? grey[800] : grey[50]};
+    border-color: ${theme.palette.mode === "dark" ? grey[600] : grey[300]};
   }
 
   &:focus-visible {
     border-color: ${blue[400]};
-    outline: 3px solid ${theme.palette.mode === 'dark' ? grey[600] : grey[200]};
+    outline: 3px solid ${theme.palette.mode === "dark" ? grey[600] : grey[200]};
   }
 
   & > svg {
@@ -80,10 +80,10 @@ const Toggle = styled('button')(
     top: 0;
     right: 10px;
   }
-  `,
+  `
 );
 
-const Listbox = styled('ul')(
+const Listbox = styled("ul")(
   ({ theme }) => `
   font-family: IBM Plex Sans, sans-serif;
   font-size: 0.875rem;
@@ -94,9 +94,9 @@ const Listbox = styled('ul')(
   border-radius: 12px;
   text-align: left;
   line-height: 1.5;
-  background: ${theme.palette.mode === 'dark' ? grey[900] : '#fff'};
-  border: 1px solid ${theme.palette.mode === 'dark' ? grey[700] : grey[200]};
-  color: ${theme.palette.mode === 'dark' ? grey[300] : grey[900]};
+  background: ${theme.palette.mode === "dark" ? grey[900] : "#fff"};
+  border: 1px solid ${theme.palette.mode === "dark" ? grey[700] : grey[200]};
+  color: ${theme.palette.mode === "dark" ? grey[300] : grey[900]};
   padding: 5px;
   margin: 5px 0 0 0;
   position: absolute;
@@ -107,7 +107,7 @@ const Listbox = styled('ul')(
   outline: 0px;
   list-style: none;
   box-shadow: 0px 2px 6px ${
-    theme.palette.mode === 'dark' ? 'rgba(0,0,0, 0.50)' : 'rgba(0,0,0, 0.05)'
+    theme.palette.mode === "dark" ? "rgba(0,0,0, 0.50)" : "rgba(0,0,0, 0.05)"
   };
 
   &.hidden {
@@ -115,28 +115,28 @@ const Listbox = styled('ul')(
     visibility: hidden;
     transition: opacity 0.4s ease, visibility 0.4s step-end;
   }
-  `,
+  `
 );
 
-const Option = styled('li')(
+const Option = styled("li")(
   ({ theme }) => `
   padding: 8px;
   border-radius: 0.45em;
 
   &[aria-selected='true'] {
-    background-color: ${theme.palette.mode === 'dark' ? blue[900] : blue[100]};
-    color: ${theme.palette.mode === 'dark' ? blue[100] : blue[900]};
+    background-color: ${theme.palette.mode === "dark" ? blue[900] : blue[100]};
+    color: ${theme.palette.mode === "dark" ? blue[100] : blue[900]};
   }
 
   &.highlighted,
   &:hover {
-    background-color: ${theme.palette.mode === 'dark' ? grey[800] : grey[100]};
-    color: ${theme.palette.mode === 'dark' ? grey[300] : grey[900]};
+    background-color: ${theme.palette.mode === "dark" ? grey[800] : grey[100]};
+    color: ${theme.palette.mode === "dark" ? grey[300] : grey[900]};
   }
 
   &[aria-selected='true'].highlighted {
-    background-color: ${theme.palette.mode === 'dark' ? blue[900] : blue[100]};
-    color: ${theme.palette.mode === 'dark' ? blue[100] : blue[900]};
+    background-color: ${theme.palette.mode === "dark" ? blue[900] : blue[100]};
+    color: ${theme.palette.mode === "dark" ? blue[100] : blue[900]};
   }
 
   &:before {
@@ -149,7 +149,7 @@ const Option = styled('li')(
     border-radius: 50%;
     vertical-align: middle;
   }
-  `,
+  `
 );
 
 interface Props {
@@ -166,7 +166,7 @@ interface OptionProps {
 
 function renderSelectedValue(
   value: string | null,
-  options: SelectOptionDefinition<string>[],
+  options: SelectOptionDefinition<string>[]
 ) {
   const selectedOption = options.find((option) => option.value === value);
 
@@ -185,7 +185,7 @@ function CustomOption(props: OptionProps) {
     <Option
       {...getRootProps()}
       className={clsx({ highlighted }, className)}
-      style={{ '--color': value } as any}
+      style={{ "--color": value } as any}
     >
       {children}
     </Option>
@@ -204,7 +204,7 @@ function CustomSelect({ options, placeholder }: Props) {
     onOpenChange: setListboxVisible,
     open: listboxVisible,
   });
-  
+
   React.useEffect(() => {
     if (listboxVisible) {
       listboxRef.current?.focus();
@@ -213,20 +213,29 @@ function CustomSelect({ options, placeholder }: Props) {
 
   return (
     <Root className="root">
-      <Toggle {...getButtonProps()} style={{ '--color': value } as any}  className="toggle">
-        {renderSelectedValue(value, options) || renderSelectedValue('GET', options)}
+      <Toggle
+        {...getButtonProps()}
+        style={{ "--color": value } as any}
+        className="toggle"
+      >
+        {renderSelectedValue(value, options) ||
+          renderSelectedValue("GET", options)}
 
         <UnfoldMoreRoundedIcon />
       </Toggle>
       <Listbox
         {...getListboxProps()}
         aria-hidden={!listboxVisible}
-        className={`${listboxVisible ? '' : 'hidden'} listbox`}
+        className={`${listboxVisible ? "" : "hidden"} listbox`}
       >
         <SelectProvider value={contextValue}>
           {options.map((option) => {
             return (
-              <CustomOption key={option.value} value={option.value}  className="option">
+              <CustomOption
+                key={option.value}
+                value={option.value}
+                className="option"
+              >
                 {option.label}
               </CustomOption>
             );
@@ -253,4 +262,6 @@ function CustomSelect({ options, placeholder }: Props) {
 // ];
 
 const HTTP_verbs = ["GET", "HEAD", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"];
-const options = HTTP_verbs.map(verb => {return {label: verb, value: verb};});
+const options = HTTP_verbs.map((verb) => {
+  return { label: verb, value: verb };
+});
