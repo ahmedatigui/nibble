@@ -247,10 +247,7 @@ $color-accent-700: var(--accent-700);
 $color-accent-800: var(--accent-800);
 $color-accent-900: var(--accent-900);
 
-
-
 /* ----------------- MINE ------------------- */
-
 
 $p-100: hsla(0, 0%, 100%, 1);
 $p-98: hsla(266, 100%, 99%, 1);
@@ -346,42 +343,41 @@ $nv-20: hsla(71, 13%, 17%, 1);
 $nv-10: hsla(78, 21%, 9%, 1);
 $nv-0: hsla(0, 0%, 0%, 1);
 
-
 $light: (
   "primary": $p-40,
   "on-primary": $p-100,
-  
+
   "secondary": $s-40,
   "on-secondary": $s-100,
-  
+
   "tertiary": $t-40,
   "on-tertiary": $t-100,
 
   "error": $e-40,
   "on-error": $e-100,
-  
+
   "primary-container": $p-90,
   "on-primary-container": $p-10,
-  
+
   "secondary-container": $s-90,
   "on-secondary-container": $s-10,
-  
+
   "tertiary-container": $t-90,
   "on-tertiary-container": $t-10,
 
   "error-container": $e-90,
   "on-error-container": $e-10,
-  
+
   "primary-fixed": $p-90,
   "primary-fixed-dim": $p-80,
   "on-primary-fixed": $p-10,
   "on-primary-fixed-variant": $s-30,
-  
+
   "secondary-fixed": $s-90,
   "secondary-fixed-dim": $s-80,
   "on-secondary-fixed": $s-10,
   "on-secondary-fixed-variant": $s-30,
-  
+
   "tertiary-fixed": $t-90,
   "tertiary-fixed-dim": $t-80,
   "on-tertiary-fixed": $t-10,
@@ -410,38 +406,38 @@ $light: (
 $dark: (
   "primary": $p-80,
   "on-primary": $p-20,
-  
+
   "secondary": $s-80,
   "on-secondary": $s-20,
 
   "tertiary": $t-80,
   "on-tertiary": $t-20,
-  
+
   "error": $e-80,
   "on-error": $e-80,
-  
+
   "primary-container": $p-30,
   "on-primary-container": $p-90,
-  
+
   "secondary-container": $s-30,
   "on-secondary-container": $s-90,
-  
+
   "tertiary-container": $t-80,
   "on-tertiary-container": $t-20,
 
   "error-container": $e-30,
   "on-error-container": $e-90,
-  
+
   "primary-fixed": $p-90,
   "primary-fixed-dim": $p-80,
   "on-primary-fixed": $p-10,
   "on-primary-fixed-variant": $s-30,
-  
+
   "secondary-fixed": $s-90,
   "secondary-fixed-dim": $s-80,
   "on-secondary-fixed": $s-10,
   "on-secondary-fixed-variant": $s-30,
-  
+
   "tertiary-fixed": $t-90,
   "tertiary-fixed-dim": $t-80,
   "on-tertiary-fixed": $t-10,

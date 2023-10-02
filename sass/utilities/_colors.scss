@@ -15,7 +15,6 @@
 //   }
 // }
 
-
 @each $color, $value in $light {
   .clr-#{$color} {
     color: $value;
