@@ -1,39 +1,60 @@
-"use client";
+'use client';
 
-import { useQuery } from "@tanstack/react-query";
-import axios from "axios";
+import { useAtom } from 'jotai';
+
+// Utils
+import createApiRequestFunction from '@/utils/restApi';
+import { httpRequestConfigAtom, httpResponseConfigAtom } from '../utils/atoms';
+
+// Hooks
+import { useRestApi } from '@/hooks/useRestApi';
 
 // Components
-import UseSelect from "../Components/Select";
-import { Button, InputBase } from "@mui/material-next";
-import { Tab } from "@mui/base/Tab";
-import { TabsList } from "@mui/base/TabsList";
-import { TabPanel } from "@mui/base/TabPanel";
-import { Tabs } from "@mui/base/Tabs";
+import UnstyledSelectControlled from '../Components/Select';
+import { Button, InputBase } from '@mui/material-next';
+import { Tab } from '@mui/base/Tab';
+import { TabsList } from '@mui/base/TabsList';
+import { TabPanel } from '@mui/base/TabPanel';
+import { Tabs } from '@mui/base/Tabs';
 
 // Icons
-import Send from "@mui/icons-material/Send";
-import { useRestApi } from "@/hooks/useRestApi";
-import createApiRequestFunction from "@/utils/restApi";
+import Send from '@mui/icons-material/Send';
+import { useEffect } from 'react';
 
 export default function Home() {
-  // const { data, isLoading, isError, error } = useRestApi({url: 'https://jsonplaceholder.typicode.com/users', method: 'GET'});
-  // const response = await useRestApi({apiURL: 'https://jsonplaceholder.typicode.com/users', httpMethod: 'GET'});
+  const [httpRequestConfig, setHttpRequestConfig] = useAtom(
+    httpRequestConfigAtom
+  );
+  const [httpResponseConfig, setHttpResponseConfig] = useAtom(
+    httpResponseConfigAtom
+  );
 
-  // if (isLoading) {
-  //   console.log('Loading...');
-  //   return <p style={{ textAlign: 'center' }}>loading...</p>;
-  // }
-  // if (isError) {
-  //   console.log({ error });
-  //   return <p style={{ textAlign: 'center' }}>Error</p>;
-  // }
+  useEffect(() => console.log(httpRequestConfig), [httpRequestConfig]);
+
   async function handleSubmit() {
-    const response = await createApiRequestFunction({
-      apiURL: "https://jsonplaceholder.typicode.com/users",
-      httpMethod: "GET",
-    });
-    console.log(response);
+    try {
+      setHttpResponseConfig((prev) => ({ ...prev, status: 'loading' }));
+      const response: any = await createApiRequestFunction({
+        apiURL: 'https://jsonplaceholder.typicode.com/users',
+        httpMethod: 'GET',
+      });
+
+      const data: any = response.data;
+      setHttpResponseConfig((prev) => ({
+        ...prev,
+        status: 'hasData',
+        data: data,
+      }));
+      console.log(httpResponseConfig);
+      console.log(response, data);
+    } catch (error) {
+      setHttpResponseConfig((prev) => ({
+        ...prev,
+        status: 'hasError',
+        error: error,
+      }));
+      console.log(httpResponseConfig);
+    }
   }
 
   return (
@@ -59,10 +80,18 @@ export default function Home() {
         <section>
           <div className="panel action-panel | bg-surface-container large-rounding padding-2">
             <div className="input-container | bg-surface-container-high">
-              {UseSelect()}
+              <UnstyledSelectControlled setHttpRequestConfig={setHttpRequestConfig} />
               <InputBase
                 className="input"
-                placeholder="https://www.page.com/api/"
+                defaultValue="https://jsonplaceholder.typicode.com/users"
+                onChange={(
+                  e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+                ) =>
+                  setHttpRequestConfig((prev) => ({
+                    ...prev,
+                    apiURL: e.target.value,
+                  }))
+                }
               />
               <Button className="button" onClick={() => handleSubmit()}>
                 <Send />
@@ -113,7 +142,18 @@ export default function Home() {
                   </Tab>
                 </TabsList>
                 <TabPanel value={1} className="tab-panel">
-                  First page
+                  <section className="response">
+                    <pre>
+                      {httpResponseConfig.status === 'hasData'
+                        ? `${JSON.stringify(
+                            httpResponseConfig.data,
+                            null,
+                            '\n'
+                          )}`
+                        : `${httpResponseConfig.error}` ??
+                          `${httpResponseConfig.status}`}
+                    </pre>
+                  </section>
                 </TabPanel>
                 <TabPanel value={2} className="tab-panel">
                   Second page
@@ -126,21 +166,6 @@ export default function Home() {
           </div>
         </section>
       </main>
-      {/* <section>
-        {data?.map((user) => (
-          <div
-            key={user.id}
-            style={{ border: '1px solid #ccc', textAlign: 'center' }}
-          >
-            <img
-              src={`https://robohash.org/${user.id}?set=set2&size=180x180`}
-              alt={user.name}
-              style={{ width: 180, height: 180 }}
-            />
-            <h3>{user.name}</h3>
-          </div>
-        ))}
-      </section> */}
     </>
   );
 }

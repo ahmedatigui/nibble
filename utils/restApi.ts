@@ -17,7 +17,6 @@ export default async function createApiRequestFunction({
     case "POST":
       return await postApi({ apiURL, httpMethod, body });
       break;
-
     default:
       break;
   }
