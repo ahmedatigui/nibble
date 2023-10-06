@@ -12,10 +12,7 @@ import { useRestApi } from '@/hooks/useRestApi';
 // Components
 import UnstyledSelectControlled from '../Components/Select';
 import { Button, InputBase } from '@mui/material-next';
-import { Tab } from '@mui/base/Tab';
-import { TabsList } from '@mui/base/TabsList';
-import { TabPanel } from '@mui/base/TabPanel';
-import { Tabs } from '@mui/base/Tabs';
+import * as Tabs from '@radix-ui/react-tabs';
 
 // Icons
 import Send from '@mui/icons-material/Send';
@@ -80,7 +77,9 @@ export default function Home() {
         <section>
           <div className="panel action-panel | bg-surface-container large-rounding padding-2">
             <div className="input-container | bg-surface-container-high">
-              <UnstyledSelectControlled setHttpRequestConfig={setHttpRequestConfig} />
+              <UnstyledSelectControlled
+                setHttpRequestConfig={setHttpRequestConfig}
+              />
               <InputBase
                 className="input"
                 defaultValue="https://jsonplaceholder.typicode.com/users"
@@ -105,43 +104,62 @@ export default function Home() {
           </div>
           <div className="panels">
             <div className="panel | bg-surface-container large-rounding">
-              <Tabs defaultValue={1} className="tabs">
-                <TabsList className="tabs-list">
-                  <Tab value={1} className="tab">
-                    One
-                  </Tab>
-                  <Tab value={2} className="tab">
-                    Two
-                  </Tab>
-                  <Tab value={3} className="tab">
-                    Three
-                  </Tab>
-                </TabsList>
-                <TabPanel value={1} className="tab-panel">
-                  First page
-                </TabPanel>
-                <TabPanel value={2} className="tab-panel">
-                  Second page
-                </TabPanel>
-                <TabPanel value={3} className="tab-panel">
-                  Third page
-                </TabPanel>
-              </Tabs>
+            <Tabs.Root className="TabsRoot" defaultValue="tab1">
+                <Tabs.List
+                  className="TabsList"
+                  aria-label="Manage your account"
+                >
+                  <Tabs.Trigger className="TabsTrigger" value="tab1">
+                    Params
+                  </Tabs.Trigger>
+                  <Tabs.Trigger className="TabsTrigger" value="tab2">
+                    Headers
+                  </Tabs.Trigger>
+                  <Tabs.Trigger className="TabsTrigger" value="tab3">
+                    Auth
+                  </Tabs.Trigger>
+                  <Tabs.Trigger className="TabsTrigger" value="tab4">
+                    Body
+                  </Tabs.Trigger>
+                </Tabs.List>
+                <Tabs.Content className="TabsContent" value="tab1">
+                  <p className="Text">
+                    Make changes to your account here. Click save when you are
+                    done.
+                  </p>
+                </Tabs.Content>
+                <Tabs.Content className="TabsContent" value="tab2">
+                  <p className="Text">
+                    Change your password here. After saving, you willl be logged
+                    out.
+                  </p>
+                </Tabs.Content>
+              </Tabs.Root>
             </div>
             <div className="panel | bg-surface-container large-rounding">
-              <Tabs defaultValue={1} className="tabs">
-                <TabsList className="tabs-list">
-                  <Tab value={1} className="tab">
-                    One
-                  </Tab>
-                  <Tab value={2} className="tab">
-                    Two
-                  </Tab>
-                  <Tab value={3} className="tab">
-                    Three
-                  </Tab>
-                </TabsList>
-                <TabPanel value={1} className="tab-panel">
+              <Tabs.Root className="TabsRoot" defaultValue="tab1">
+                <Tabs.List
+                  className="TabsList"
+                  aria-label="Manage your account"
+                >
+                  <Tabs.Trigger className="TabsTrigger" value="tab1">
+                    JSON
+                  </Tabs.Trigger>
+                  <Tabs.Trigger className="TabsTrigger" value="tab2">
+                    Raw
+                  </Tabs.Trigger>
+                  <Tabs.Trigger className="TabsTrigger" value="tab1">
+                    Headers
+                  </Tabs.Trigger>
+                  <Tabs.Trigger className="TabsTrigger" value="tab2">
+                    Stats
+                  </Tabs.Trigger>
+                </Tabs.List>
+                <Tabs.Content className="TabsContent" value="tab1">
+                  <p className="Text">
+                    Make changes to your account here. Click save when you are
+                    done.
+                  </p>
                   <section className="response">
                     <pre>
                       {httpResponseConfig.status === 'hasData'
@@ -154,14 +172,14 @@ export default function Home() {
                           `${httpResponseConfig.status}`}
                     </pre>
                   </section>
-                </TabPanel>
-                <TabPanel value={2} className="tab-panel">
-                  Second page
-                </TabPanel>
-                <TabPanel value={3} className="tab-panel">
-                  Third page
-                </TabPanel>
-              </Tabs>
+                </Tabs.Content>
+                <Tabs.Content className="TabsContent" value="tab2">
+                  <p className="Text">
+                    Change your password here. After saving, willl be logged
+                    out.
+                  </p>
+                </Tabs.Content>
+              </Tabs.Root>
             </div>
           </div>
         </section>
