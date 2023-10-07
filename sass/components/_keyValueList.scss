@@ -1,0 +1,35 @@
+@use '../abstracts/' as *;
+
+.keyValueListContainer {
+   inline-size: 100%;
+
+  .keyValueListRow {
+    display: grid;
+    grid-template-columns: 1fr 1fr auto auto;
+    align-items: center;
+    gap: $size-2;
+    padding: $size-4;
+    border-radius: $large-rounding;
+
+    &:hover{
+        background-color: map-get($map: $light, $key: "surface-container-high");
+    }
+
+    .keyValueListInput {
+
+      input{
+        inline-size: 100%;
+        border-radius: 4px;
+        padding: 0 10px;
+        font-size: 15px;
+        line-height: 1;
+        height: 35px;
+        border: none;
+
+        &:focus {
+          box-shadow: 0 0 0 2px map-get($map: $light, $key: "primary");
+        }
+      }
+    }
+  }
+}

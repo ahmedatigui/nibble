@@ -13,6 +13,8 @@ import { useRestApi } from '@/hooks/useRestApi';
 import UnstyledSelectControlled from '../Components/Select';
 import { Button, InputBase } from '@mui/material-next';
 import * as Tabs from '@radix-ui/react-tabs';
+import * as Checkbox from '@radix-ui/react-checkbox';
+import { CheckIcon, TrashIcon } from '@radix-ui/react-icons';
 
 // Icons
 import Send from '@mui/icons-material/Send';
@@ -104,7 +106,7 @@ export default function Home() {
           </div>
           <div className="panels">
             <div className="panel | bg-surface-container large-rounding">
-            <Tabs.Root className="TabsRoot" defaultValue="tab1">
+              <Tabs.Root className="TabsRoot" defaultValue="tab1">
                 <Tabs.List
                   className="TabsList"
                   aria-label="Manage your account"
@@ -123,10 +125,38 @@ export default function Home() {
                   </Tabs.Trigger>
                 </Tabs.List>
                 <Tabs.Content className="TabsContent" value="tab1">
-                  <p className="Text">
-                    Make changes to your account here. Click save when you are
-                    done.
-                  </p>
+                  <div className="keyValueListContainer">
+                    <div className="keyValueListRow">
+                      <div className="keyValueListInput">
+                        <input className="key" id="key" placeholder="Key" />
+                      </div>
+                      <div className="keyValueListInput">
+                        <input
+                          className="keyValueListInput value"
+                          id="value"
+                          placeholder="Value"
+                        />
+                      </div>
+                      <div className="keyValueListCheckBox">
+                        <Checkbox.Root
+                          className="CheckboxRoot"
+                          defaultChecked
+                          id="c1"
+                        >
+                          <Checkbox.Indicator className="CheckboxIndicator">
+                            <CheckIcon />
+                          </Checkbox.Indicator>
+                        </Checkbox.Root>
+                      </div>
+                      <div className="keyValueListButton">
+                        <button>
+                          <span>
+                            <TrashIcon />
+                          </span>
+                        </button>
+                      </div>
+                    </div>
+                  </div>
                 </Tabs.Content>
                 <Tabs.Content className="TabsContent" value="tab2">
                   <p className="Text">
@@ -148,10 +178,10 @@ export default function Home() {
                   <Tabs.Trigger className="TabsTrigger" value="tab2">
                     Raw
                   </Tabs.Trigger>
-                  <Tabs.Trigger className="TabsTrigger" value="tab1">
+                  <Tabs.Trigger className="TabsTrigger" value="tab3">
                     Headers
                   </Tabs.Trigger>
-                  <Tabs.Trigger className="TabsTrigger" value="tab2">
+                  <Tabs.Trigger className="TabsTrigger" value="tab4">
                     Stats
                   </Tabs.Trigger>
                 </Tabs.List>
@@ -174,6 +204,18 @@ export default function Home() {
                   </section>
                 </Tabs.Content>
                 <Tabs.Content className="TabsContent" value="tab2">
+                  <p className="Text">
+                    Change your password here. After saving, willl be logged
+                    out.
+                  </p>
+                </Tabs.Content>
+                <Tabs.Content className="TabsContent" value="tab3">
+                  <p className="Text">
+                    Change your password here. After saving, willl be logged
+                    out.
+                  </p>
+                </Tabs.Content>
+                <Tabs.Content className="TabsContent" value="tab4">
                   <p className="Text">
                     Change your password here. After saving, willl be logged
                     out.
