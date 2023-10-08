@@ -1,9 +1,10 @@
-import { atom, useAtom, useSetAtom, useAtomValue } from "jotai";
+import { atom } from "jotai";
+import { httpRequestConfigType, httpResponseConfigType, paramsAtomType } from "./types";
 
-export const httpRequestConfigAtom = atom<{apiURL: string, httpMethod: string, body: string | null}>({apiURL: "https://jsonplaceholder.typicode.com/users", httpMethod: "GET", body: null});
+export const httpRequestConfigAtom = atom<httpRequestConfigType>({apiURL: "https://jsonplaceholder.typicode.com/users", httpMethod: "GET"});
 
-export const httpResponseConfigAtom = atom<{status: string, data: object | null, error: unknown | null}>({status: "idle", data: null, error: null});
+export const httpResponseConfigAtom = atom<httpResponseConfigType>({status: "idle", data: null, error: null});
 
-export const httpRequestStatusAtom = atom({});
+export const configParamsAtom = atom<paramsAtomType>({count: 1, lists: [{key: '', value: '', checked: true}]});
 
 export const environmentVariablesAtom = atom({});

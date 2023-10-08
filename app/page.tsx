@@ -4,23 +4,22 @@ import { useAtom } from 'jotai';
 
 // Utils
 import createApiRequestFunction from '@/utils/restApi';
-import { httpRequestConfigAtom, httpResponseConfigAtom } from '../utils/atoms';
+import { httpRequestConfigAtom, httpResponseConfigAtom, configParamsAtom } from '../utils/atoms';
 
-// Hooks
-import { useRestApi } from '@/hooks/useRestApi';
 
 // Components
-import UnstyledSelectControlled from '../Components/Select';
+import SelectDemo from '../Components/Select';
 import { Button, InputBase } from '@mui/material-next';
 import * as Tabs from '@radix-ui/react-tabs';
-import * as Checkbox from '@radix-ui/react-checkbox';
-import { CheckIcon, TrashIcon } from '@radix-ui/react-icons';
+
 
 // Icons
 import Send from '@mui/icons-material/Send';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
+import KeyValueList from '@/Components/KeyValueList';
 
 export default function Home() {
+  const [configParams, setConfigParams] = useAtom(configParamsAtom);
   const [httpRequestConfig, setHttpRequestConfig] = useAtom(
     httpRequestConfigAtom
   );
@@ -33,9 +32,10 @@ export default function Home() {
   async function handleSubmit() {
     try {
       setHttpResponseConfig((prev) => ({ ...prev, status: 'loading' }));
+      console.log(httpRequestConfig);
       const response: any = await createApiRequestFunction({
-        apiURL: 'https://jsonplaceholder.typicode.com/users',
-        httpMethod: 'GET',
+        apiURL: httpRequestConfig.apiURL,
+        httpMethod: httpRequestConfig.httpMethod,
       });
 
       const data: any = response.data;
@@ -56,6 +56,8 @@ export default function Home() {
     }
   }
 
+  const KeyValueLists = () => configParams.lists.map((list, ind) => (<KeyValueList key={ind} order={ind} />));
+  
   return (
     <>
       <header className="nav | wrapper | bg-surface-container-low clr-on-surface">
@@ -75,18 +77,16 @@ export default function Home() {
             <li>C.</li>
             <li>D.</li>
           </ul>
-        </aside>
+        </aside>  
         <section>
           <div className="panel action-panel | bg-surface-container large-rounding padding-2">
             <div className="input-container | bg-surface-container-high">
-              <UnstyledSelectControlled
-                setHttpRequestConfig={setHttpRequestConfig}
-              />
+              <SelectDemo />
               <InputBase
                 className="input"
                 defaultValue="https://jsonplaceholder.typicode.com/users"
                 onChange={(
-                  e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+                  e: React.ChangeEvent<HTMLInputElement>
                 ) =>
                   setHttpRequestConfig((prev) => ({
                     ...prev,
@@ -126,36 +126,7 @@ export default function Home() {
                 </Tabs.List>
                 <Tabs.Content className="TabsContent" value="tab1">
                   <div className="keyValueListContainer">
-                    <div className="keyValueListRow">
-                      <div className="keyValueListInput">
-                        <input className="key" id="key" placeholder="Key" />
-                      </div>
-                      <div className="keyValueListInput">
-                        <input
-                          className="keyValueListInput value"
-                          id="value"
-                          placeholder="Value"
-                        />
-                      </div>
-                      <div className="keyValueListCheckBox">
-                        <Checkbox.Root
-                          className="CheckboxRoot"
-                          defaultChecked
-                          id="c1"
-                        >
-                          <Checkbox.Indicator className="CheckboxIndicator">
-                            <CheckIcon />
-                          </Checkbox.Indicator>
-                        </Checkbox.Root>
-                      </div>
-                      <div className="keyValueListButton">
-                        <button>
-                          <span>
-                            <TrashIcon />
-                          </span>
-                        </button>
-                      </div>
-                    </div>
+                    <KeyValueLists />
                   </div>
                 </Tabs.Content>
                 <Tabs.Content className="TabsContent" value="tab2">

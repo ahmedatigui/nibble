@@ -1,21 +1,18 @@
 import axios from "axios";
+import { httpRequestConfigType } from "./types";
 
 // Handle
 export default async function createApiRequestFunction({
   apiURL,
   httpMethod = "GET",
-  body,
-}: {
-  apiURL: string;
-  httpMethod: string;
-  body?: string | undefined;
-}) {
+  data,
+}: httpRequestConfigType) {
   switch (httpMethod) {
     case "GET":
       return await getApi({ apiURL, httpMethod });
       break;
     case "POST":
-      return await postApi({ apiURL, httpMethod, body });
+      return await postApi({ apiURL, httpMethod, data });
       break;
     default:
       break;
@@ -26,10 +23,7 @@ export default async function createApiRequestFunction({
 async function getApi({
   apiURL,
   httpMethod,
-}: {
-  apiURL: string;
-  httpMethod: string;
-}) {
+}: httpRequestConfigType) {
   try {
     const response = await axios.get(apiURL);
     return response;
@@ -42,14 +36,11 @@ async function getApi({
 async function postApi({
   apiURL,
   httpMethod,
-  body,
-}: {
-  apiURL: string;
-  httpMethod: string;
-  body: string | undefined;
-}) {
+  data,
+  config
+}: httpRequestConfigType) {
   try {
-    const response = await axios.post(apiURL, body);
+    const response = await axios.post(apiURL, data, config);
     return response;
   } catch (error) {
     return error;
