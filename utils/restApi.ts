@@ -20,10 +20,7 @@ export default async function createApiRequestFunction({
 }
 
 // GET
-async function getApi({
-  apiURL,
-  httpMethod,
-}: httpRequestConfigType) {
+async function getApi({ apiURL, httpMethod }: httpRequestConfigType) {
   try {
     const response = await axios.get(apiURL);
     return response;
@@ -37,7 +34,7 @@ async function postApi({
   apiURL,
   httpMethod,
   data,
-  config
+  config,
 }: httpRequestConfigType) {
   try {
     const response = await axios.post(apiURL, data, config);

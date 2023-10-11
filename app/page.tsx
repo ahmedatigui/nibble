@@ -1,5 +1,6 @@
 "use client";
 
+import { useCallback } from "react";
 import { useAtom } from "jotai";
 
 // Utils
@@ -30,13 +31,6 @@ export default function Home() {
   const [httpResponseConfig, setHttpResponseConfig] = useAtom(
     httpResponseConfigAtom
   );
-
-  useEffect(() => {
-    console.log(configParams);
-    setRKVL(renderKeyValueLists());
-  }, [configParams]);
-
-  useEffect(() => console.log(httpRequestConfig), [httpRequestConfig]);
 
   async function handleSubmit() {
     try {
@@ -69,6 +63,14 @@ export default function Home() {
     configParams.map((list: paramsAtomType, ind: number) => (
       <KeyValueList key={list.id} order={ind} />
     ));
+
+  useEffect(() => {
+    console.log(configParams);
+    setRKVL(renderKeyValueLists());
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [configParams]);
+
+  useEffect(() => console.log(httpRequestConfig), [httpRequestConfig]);
 
   return (
     <>
