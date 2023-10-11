@@ -1,19 +1,20 @@
-@use "../abstracts/" as *;
+@use '../abstracts/' as *;
 
-.root {
-  display: inline-block;
+.toggle {
+  border-radius: $fully-rounding 0 0 $fully-rounding;
+  min-width: $size-15;
+  padding-inline: $size-4;
+  background-color: map-get($map: $light, $key: 'surface-container-highest');
+  border: none;
+  block-size: 100%;
+  display: flex;
+  place-items: center;
+  gap: $size-8;
 
-  .toggle {
-    border-radius: $fully-rounding 0 0 $fully-rounding;
-    min-width: $size-15;
-    padding-inline: $size-4;
-    background-color: map-get($map: $light, $key: "surface-container-highest");
-    border: none;
-    block-size: 100%;
-  }
+}
 
   .listbox {
     min-width: fit-content;
     padding-inline: $size-4;
+    background-color: map-get($map: $light, $key: "surface");
   }
-}
