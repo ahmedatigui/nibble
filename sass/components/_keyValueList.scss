@@ -77,9 +77,9 @@
          &:hover {
            background-color: map-get($map: $light, $key: "surface-container");
          }
-        //  &:focus-within {
-        //    box-shadow: 0 0 0 2px map-get($map: $light, $key: "primary");
-        //  }
+         &:focus-within {
+            box-shadow: 0 0 0 2px map-get($map: $light, $key: "primary");
+         }
 
          span {
           block-size: 100%;

@@ -1,4 +1,4 @@
-import { AxiosRequestConfig } from "axios";
+import { AxiosRequestConfig } from 'axios';
 
 export interface httpRequestConfigType {
   apiURL: string;
@@ -14,6 +14,8 @@ export interface httpResponseConfigType {
 }
 
 export interface paramsAtomType {
-  count: number;
-  lists: {key: string; value: string, checked: boolean}[];
+  id: string;
+  key: string;
+  value: string;
+  checked: string | boolean;
 }

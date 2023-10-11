@@ -1,24 +1,28 @@
-'use client';
+"use client";
 
-import { useAtom } from 'jotai';
+import { useAtom } from "jotai";
 
 // Utils
-import createApiRequestFunction from '@/utils/restApi';
-import { httpRequestConfigAtom, httpResponseConfigAtom, configParamsAtom } from '../utils/atoms';
-
+import createApiRequestFunction from "@/utils/restApi";
+import {
+  httpRequestConfigAtom,
+  httpResponseConfigAtom,
+  configParamsAtom,
+} from "../utils/atoms";
 
 // Components
-import SelectDemo from '../Components/Select';
-import { Button, InputBase } from '@mui/material-next';
-import * as Tabs from '@radix-ui/react-tabs';
-
+import SelectDemo from "../Components/Select";
+import { Button, InputBase } from "@mui/material-next";
+import * as Tabs from "@radix-ui/react-tabs";
 
 // Icons
-import Send from '@mui/icons-material/Send';
-import { useEffect, useState } from 'react';
-import KeyValueList from '@/Components/KeyValueList';
+import Send from "@mui/icons-material/Send";
+import { useEffect, useState } from "react";
+import KeyValueList from "@/Components/KeyValueList";
+import { paramsAtomType } from "@/utils/types";
 
 export default function Home() {
+  const [rKVL, setRKVL] = useState<JSX.Element[] | null>(null);
   const [configParams, setConfigParams] = useAtom(configParamsAtom);
   const [httpRequestConfig, setHttpRequestConfig] = useAtom(
     httpRequestConfigAtom
@@ -27,11 +31,16 @@ export default function Home() {
     httpResponseConfigAtom
   );
 
+  useEffect(() => {
+    console.log(configParams);
+    setRKVL(renderKeyValueLists());
+  }, [configParams]);
+
   useEffect(() => console.log(httpRequestConfig), [httpRequestConfig]);
 
   async function handleSubmit() {
     try {
-      setHttpResponseConfig((prev) => ({ ...prev, status: 'loading' }));
+      setHttpResponseConfig((prev) => ({ ...prev, status: "loading" }));
       console.log(httpRequestConfig);
       const response: any = await createApiRequestFunction({
         apiURL: httpRequestConfig.apiURL,
@@ -41,7 +50,7 @@ export default function Home() {
       const data: any = response.data;
       setHttpResponseConfig((prev) => ({
         ...prev,
-        status: 'hasData',
+        status: "hasData",
         data: data,
       }));
       console.log(httpResponseConfig);
@@ -49,15 +58,18 @@ export default function Home() {
     } catch (error) {
       setHttpResponseConfig((prev) => ({
         ...prev,
-        status: 'hasError',
+        status: "hasError",
         error: error,
       }));
       console.log(httpResponseConfig);
     }
   }
 
-  const KeyValueLists = () => configParams.lists.map((list, ind) => (<KeyValueList key={ind} order={ind} />));
-  
+  const renderKeyValueLists = (): JSX.Element[] =>
+    configParams.map((list: paramsAtomType, ind: number) => (
+      <KeyValueList key={list.id} order={ind} />
+    ));
+
   return (
     <>
       <header className="nav | wrapper | bg-surface-container-low clr-on-surface">
@@ -77,7 +89,7 @@ export default function Home() {
             <li>C.</li>
             <li>D.</li>
           </ul>
-        </aside>  
+        </aside>
         <section>
           <div className="panel action-panel | bg-surface-container large-rounding padding-2">
             <div className="input-container | bg-surface-container-high">
@@ -85,9 +97,7 @@ export default function Home() {
               <InputBase
                 className="input"
                 defaultValue="https://jsonplaceholder.typicode.com/users"
-                onChange={(
-                  e: React.ChangeEvent<HTMLInputElement>
-                ) =>
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                   setHttpRequestConfig((prev) => ({
                     ...prev,
                     apiURL: e.target.value,
@@ -126,7 +136,7 @@ export default function Home() {
                 </Tabs.List>
                 <Tabs.Content className="TabsContent" value="tab1">
                   <div className="keyValueListContainer">
-                    <KeyValueLists />
+                    {rKVL ?? renderKeyValueLists()}
                   </div>
                 </Tabs.Content>
                 <Tabs.Content className="TabsContent" value="tab2">
@@ -163,11 +173,11 @@ export default function Home() {
                   </p>
                   <section className="response">
                     <pre>
-                      {httpResponseConfig.status === 'hasData'
+                      {httpResponseConfig.status === "hasData"
                         ? `${JSON.stringify(
                             httpResponseConfig.data,
                             null,
-                            '\n'
+                            "\n"
                           )}`
                         : `${httpResponseConfig.error}` ??
                           `${httpResponseConfig.status}`}
