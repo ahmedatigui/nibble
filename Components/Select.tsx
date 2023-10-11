@@ -1,13 +1,13 @@
-import React, { use } from 'react';
-import { useAtom } from 'jotai';
-import { httpRequestConfigAtom } from '@/utils/atoms';
+import React, { use } from "react";
+import { useAtom } from "jotai";
+import { httpRequestConfigAtom } from "@/utils/atoms";
 
-import * as Select from '@radix-ui/react-select';
+import * as Select from "@radix-ui/react-select";
 import {
   CheckIcon,
   ChevronDownIcon,
   ChevronUpIcon,
-} from '@radix-ui/react-icons';
+} from "@radix-ui/react-icons";
 
 const SelectDemo = () => {
   const [httpRequestConfig, setHttpRequestConfig] = useAtom(
@@ -59,7 +59,7 @@ const SelectDemo = () => {
 
 export default SelectDemo;
 
-const HTTP_verbs = ['GET', 'HEAD', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'];
+const HTTP_verbs = ["GET", "HEAD", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"];
 const options = HTTP_verbs.map((verb) => {
   return { label: verb, value: verb };
 });

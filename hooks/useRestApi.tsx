@@ -5,8 +5,7 @@ export async function useRestApi({
   apiURL,
   httpMethod = "GET",
   data,
-  config
+  config,
 }: httpRequestConfigType) {
-
   await createApiRequestFunction({ apiURL, httpMethod, data, config });
 }
