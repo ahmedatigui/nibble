@@ -9,6 +9,7 @@ import { configParamsAtom } from "@/utils/atoms";
 
 // Components
 import * as Checkbox from "@radix-ui/react-checkbox";
+import { TextField, Button } from "@radix-ui/themes"
 import { CheckIcon, TrashIcon } from "@radix-ui/react-icons";
 import { paramsAtomType } from "@/utils/types";
 
@@ -55,8 +56,19 @@ function KeyValueList({ order }: { order: number }) {
   return (
     <div className="keyValueListRow">
       <div className="keyValueListInput">
-        <input
+        {/* <input
           className="key"
+          id="key"
+          placeholder="Key"
+          onChange={(e) => {
+            updateKey(order, e.target.value);
+            if (fresh) {
+              addItem();
+              setFresh(false);
+            }
+          }}
+        /> */}
+        <TextField.Input
           id="key"
           placeholder="Key"
           onChange={(e) => {
@@ -69,7 +81,19 @@ function KeyValueList({ order }: { order: number }) {
         />
       </div>
       <div className="keyValueListInput">
-        <input
+        {/* <input
+          className="keyValueListInput value"
+          id="value"
+          placeholder="Value"
+          onChange={(e) => {
+            updateValue(order, e.target.value);
+            if (fresh) {
+              addItem();
+              setFresh(false);
+            }
+          }}
+        /> */}
+        <TextField.Input
           className="keyValueListInput value"
           id="value"
           placeholder="Value"
@@ -95,11 +119,14 @@ function KeyValueList({ order }: { order: number }) {
         </Checkbox.Root>
       </div>
       <div className="keyValueListButton" onClick={() => removeItem(order)}>
-        <button>
+        {/* <button>
           <span>
             <TrashIcon />
           </span>
-        </button>
+        </button> */}
+        <Button>
+          <TrashIcon />
+        </Button>
       </div>
     </div>
   );
