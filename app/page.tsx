@@ -15,7 +15,7 @@ import { paramsAtomType } from '@/utils/types';
 // Components
 import KeyValueList from '@/Components/KeyValueList';
 import SelectDemo from '../Components/Select';
-import { Box, TextField, Button, Text, Tabs, Code, Flex, Grid, Section } from '@radix-ui/themes';
+import { Box, TextField, Button, Text, Tabs, Code, Flex, Grid, ScrollArea } from '@radix-ui/themes';
 
 // Icons
 import { PaperPlaneIcon} from '@radix-ui/react-icons';
@@ -71,7 +71,7 @@ export default function Home() {
   useEffect(() => console.log(httpRequestConfig), [httpRequestConfig]);
 
   return (
-    <>
+    <Grid rows="auto 1fr" gap="4" className="h-screen overflow-hidden">
       <Box p="4">Nibble</Box>
       <Grid columns="auto 1fr" gap="4">
         <Box>
@@ -134,9 +134,11 @@ export default function Home() {
                   </Tabs.Trigger>
                 </Tabs.List>
                 <Tabs.Content value="tab1">
+                <ScrollArea type="always" scrollbars="vertical">
                   <div className="keyValueListContainer">
                     {rKVL ?? renderKeyValueLists()}
                   </div>
+                  </ScrollArea>
                 </Tabs.Content>
                 <Tabs.Content value="tab2">
                   <Text>
@@ -174,18 +176,20 @@ export default function Home() {
                   </Tabs.Trigger>
                 </Tabs.List>
                 <Tabs.Content value="tab1">
-                  <Box>
-                    <Code>
-                      {httpResponseConfig.status === 'hasData'
-                        ? `${JSON.stringify(
-                            httpResponseConfig.data,
-                            null,
-                            '\n'
-                          )}`
-                        : `${httpResponseConfig.error}` ??
-                          `${httpResponseConfig.status}`}
-                    </Code>
-                  </Box>
+                    <Box p="4">
+                  <ScrollArea type="always" scrollbars="both" className="h-screen overflow-scroll">
+                      <Code>
+                        {httpResponseConfig.status === 'hasData'
+                          ? `${JSON.stringify(
+                              httpResponseConfig.data,
+                              null,
+                              '\n'
+                            )}`
+                          : `${httpResponseConfig.error}` ??
+                            `${httpResponseConfig.status}`}
+                      </Code>
+                  </ScrollArea>
+                    </Box>
                 </Tabs.Content>
                 <Tabs.Content value="tab2">
                   <Text>
@@ -207,6 +211,6 @@ export default function Home() {
           </Grid>
         </Grid>
       </Grid>
-    </>
+    </Grid>
   );
 }

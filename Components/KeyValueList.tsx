@@ -8,8 +8,8 @@ import { v4 as uuidV4 } from "uuid";
 import { configParamsAtom } from "@/utils/atoms";
 
 // Components
-import * as Checkbox from "@radix-ui/react-checkbox";
-import { TextField, Button } from "@radix-ui/themes"
+// import * as Checkbox from "@radix-ui/react-checkbox";
+import { TextField, Button, Grid, Box, Checkbox } from "@radix-ui/themes"
 import { CheckIcon, TrashIcon } from "@radix-ui/react-icons";
 import { paramsAtomType } from "@/utils/types";
 
@@ -54,8 +54,8 @@ function KeyValueList({ order }: { order: number }) {
   };
 
   return (
-    <div className="keyValueListRow">
-      <div className="keyValueListInput">
+    <Grid columns="1fr 1fr auto auto" align="center" gap="2" p="4" className="keyValueListRow">
+      <Box>
         {/* <input
           className="key"
           id="key"
@@ -69,6 +69,8 @@ function KeyValueList({ order }: { order: number }) {
           }}
         /> */}
         <TextField.Input
+          width="100%"
+          size="3"
           id="key"
           placeholder="Key"
           onChange={(e) => {
@@ -79,8 +81,8 @@ function KeyValueList({ order }: { order: number }) {
             }
           }}
         />
-      </div>
-      <div className="keyValueListInput">
+      </Box>
+      <Box>
         {/* <input
           className="keyValueListInput value"
           id="value"
@@ -94,8 +96,10 @@ function KeyValueList({ order }: { order: number }) {
           }}
         /> */}
         <TextField.Input
-          className="keyValueListInput value"
+          width="100%"
+          size="3"
           id="value"
+          className="keyValueListInput value"
           placeholder="Value"
           onChange={(e) => {
             updateValue(order, e.target.value);
@@ -105,9 +109,10 @@ function KeyValueList({ order }: { order: number }) {
             }
           }}
         />
-      </div>
-      <div className="keyValueListCheckBox">
-        <Checkbox.Root
+      </Box>
+      <Box>
+        <Checkbox size="3" disabled={fresh} defaultChecked={!!fresh} onCheckedChange={(state) => updateChecked(order, state)} />
+        {/* <Checkbox.Root
           className="CheckboxRoot"
           defaultChecked={true}
           onCheckedChange={(state) => updateChecked(order, state)}
@@ -116,19 +121,19 @@ function KeyValueList({ order }: { order: number }) {
           <Checkbox.Indicator className="CheckboxIndicator">
             <CheckIcon />
           </Checkbox.Indicator>
-        </Checkbox.Root>
-      </div>
-      <div className="keyValueListButton" onClick={() => removeItem(order)}>
+        </Checkbox.Root> */}
+      </Box>
+      <Box>
         {/* <button>
           <span>
             <TrashIcon />
           </span>
         </button> */}
-        <Button>
+        <Button size="2" onClick={() => removeItem(order)}>
           <TrashIcon />
         </Button>
-      </div>
-    </div>
+      </Box>
+    </Grid>
   );
 }
 
