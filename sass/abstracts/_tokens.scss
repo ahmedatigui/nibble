@@ -19,19 +19,29 @@ $letter-spacing-loose: 0;
 $border-radius-1: $size-2;
 $border-radius-2: $size-4;
 
-$box-shadow-1: 0px 6px 5px rgb(0, 0, 0, 0.012),
-  0px 22px 18px rgb(0, 0, 0, 0.018), 0px 100px 80px rgb(0, 0, 0, 0.03);
+$box-shadow-1:
+  0px 6px 5px rgb(0, 0, 0, 0.012),
+  0px 22px 18px rgb(0, 0, 0, 0.018),
+  0px 100px 80px rgb(0, 0, 0, 0.03);
 
-$box-shadow-2: 0px 6px 5px rgb(0, 0, 0, 0.016),
-  0px 22px 18px rgb(0, 0, 0, 0.024), 0px 100px 80px rgb(0, 0, 0, 0.04);
+$box-shadow-2:
+  0px 6px 5px rgb(0, 0, 0, 0.016),
+  0px 22px 18px rgb(0, 0, 0, 0.024),
+  0px 100px 80px rgb(0, 0, 0, 0.04);
 
-$box-shadow-3: 0px 6px 5px rgb(0, 0, 0, 0.02), 0px 22px 18px rgb(0, 0, 0, 0.03),
+$box-shadow-3:
+  0px 6px 5px rgb(0, 0, 0, 0.02),
+  0px 22px 18px rgb(0, 0, 0, 0.03),
   0px 100px 80px rgb(0, 0, 0, 0.05);
 
-$box-shadow-4: 0px 6px 5px rgb(0, 0, 0, 0.03), 0px 22px 18px rgb(0, 0, 0, 0.042),
+$box-shadow-4:
+  0px 6px 5px rgb(0, 0, 0, 0.03),
+  0px 22px 18px rgb(0, 0, 0, 0.042),
   0px 100px 80px rgb(0, 0, 0, 0.07);
 
-$box-shadow-5: 0px 6px 5px rgb(0, 0, 0, 0.04), 0px 22px 18px rgb(0, 0, 0, 0.06),
+$box-shadow-5:
+  0px 6px 5px rgb(0, 0, 0, 0.04),
+  0px 22px 18px rgb(0, 0, 0, 0.06),
   0px 100px 80px rgb(0, 0, 0, 0.1);
 
 // body

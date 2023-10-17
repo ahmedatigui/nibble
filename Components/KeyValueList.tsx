@@ -9,7 +9,7 @@ import { configParamsAtom } from "@/utils/atoms";
 
 // Components
 // import * as Checkbox from "@radix-ui/react-checkbox";
-import { TextField, Button, Grid, Box, Checkbox } from "@radix-ui/themes"
+import { TextField, Button, Grid, Box, Checkbox } from "@radix-ui/themes";
 import { CheckIcon, TrashIcon } from "@radix-ui/react-icons";
 import { paramsAtomType } from "@/utils/types";
 
@@ -21,24 +21,24 @@ function KeyValueList({ order }: { order: number }) {
   const updateKey = (index: number, key: string) => {
     setList(
       list.map((item: paramsAtomType, i: number) =>
-        i === index ? { ...item, key } : item
-      )
+        i === index ? { ...item, key } : item,
+      ),
     );
   };
 
   const updateValue = (index: number, value: string) => {
     setList(
       list.map((item: paramsAtomType, i: number) =>
-        i === index ? { ...item, value } : item
-      )
+        i === index ? { ...item, value } : item,
+      ),
     );
   };
 
   const updateChecked = (index: number, checked: string | boolean) => {
     setList(
       list.map((item: paramsAtomType, i: number) =>
-        i === index ? { ...item, checked } : item
-      )
+        i === index ? { ...item, checked } : item,
+      ),
     );
   };
 
@@ -54,7 +54,13 @@ function KeyValueList({ order }: { order: number }) {
   };
 
   return (
-    <Grid columns="1fr 1fr auto auto" align="center" gap="2" p="4" className="keyValueListRow">
+    <Grid
+      columns="1fr 1fr auto auto"
+      align="center"
+      gap="2"
+      p="4"
+      className="keyValueListRow"
+    >
       <Box>
         {/* <input
           className="key"
@@ -111,7 +117,12 @@ function KeyValueList({ order }: { order: number }) {
         />
       </Box>
       <Box>
-        <Checkbox size="3" disabled={fresh} defaultChecked={!!fresh} onCheckedChange={(state) => updateChecked(order, state)} />
+        <Checkbox
+          size="3"
+          disabled={fresh}
+          defaultChecked={!!fresh}
+          onCheckedChange={(state) => updateChecked(order, state)}
+        />
         {/* <Checkbox.Root
           className="CheckboxRoot"
           defaultChecked={true}

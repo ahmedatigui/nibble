@@ -1,7 +1,7 @@
-@use '../abstracts/' as *;
+@use "../abstracts/" as *;
 
 .keyValueListContainer {
-   inline-size: 100%;
+  inline-size: 100%;
 
   .keyValueListRow {
     display: grid;
@@ -11,13 +11,12 @@
     padding: $size-4;
     border-radius: $large-rounding;
 
-    &:hover{
-        background-color: map-get($map: $light, $key: "surface-container-high");
+    &:hover {
+      background-color: map-get($map: $light, $key: "surface-container-high");
     }
 
     .keyValueListInput {
-
-      input{
+      input {
         inline-size: 100%;
         border-radius: $medium-rounding;
         padding: 0 10px;
@@ -33,7 +32,9 @@
     }
 
     .keyValueListCheckBox {
-      button {all: unset;}
+      button {
+        all: unset;
+      }
 
       .CheckboxRoot {
         background-color: white;
@@ -43,51 +44,51 @@
         display: flex;
         align-items: center;
         justify-content: center;
-      
-          &:hover {
-            background-color: map-get($map: $light, $key: "surface-container");
-          }
-          &:focus {
-            box-shadow: 0 0 0 2px map-get($map: $light, $key: "primary");
-          }
-      
-          .CheckboxIndicator {
-            color: map-get($map: $light, $key: "primary");
-            block-size: 100%;
-            inline-size: 100%;
 
-            display: grid;
-            place-content: center;
-          }
-      }
-    }
+        &:hover {
+          background-color: map-get($map: $light, $key: "surface-container");
+        }
+        &:focus {
+          box-shadow: 0 0 0 2px map-get($map: $light, $key: "primary");
+        }
 
-    .keyValueListButton{
-      button {
-         all: unset;
-         background-color: white;
-         width: 25px;
-         height: 25px;
-         border-radius: $small-rounding;
-         display: flex;
-         align-items: center;
-         justify-content: center;
-         cursor: pointer;
-                                                                               
-         &:hover {
-           background-color: map-get($map: $light, $key: "surface-container");
-         }
-         &:focus-within {
-            box-shadow: 0 0 0 2px map-get($map: $light, $key: "primary");
-         }
-
-         span {
+        .CheckboxIndicator {
+          color: map-get($map: $light, $key: "primary");
           block-size: 100%;
           inline-size: 100%;
 
           display: grid;
           place-content: center;
-         }
+        }
+      }
+    }
+
+    .keyValueListButton {
+      button {
+        all: unset;
+        background-color: white;
+        width: 25px;
+        height: 25px;
+        border-radius: $small-rounding;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+
+        &:hover {
+          background-color: map-get($map: $light, $key: "surface-container");
+        }
+        &:focus-within {
+          box-shadow: 0 0 0 2px map-get($map: $light, $key: "primary");
+        }
+
+        span {
+          block-size: 100%;
+          inline-size: 100%;
+
+          display: grid;
+          place-content: center;
+        }
       }
     }
   }
