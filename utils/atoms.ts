@@ -3,7 +3,7 @@ import { v4 as uuidV4 } from "uuid";
 import {
   httpRequestConfigType,
   httpResponseConfigType,
-  paramsAtomType,
+  keyValueAtomType,
 } from "./types";
 
 export const httpRequestConfigAtom = atom<httpRequestConfigType>({
@@ -17,7 +17,11 @@ export const httpResponseConfigAtom = atom<httpResponseConfigType>({
   error: null,
 });
 
-export const configParamsAtom = atom<paramsAtomType[]>([
+export const configParamsAtom = atom<keyValueAtomType[]>([
+  { id: uuidV4(), key: "", value: "", checked: true },
+]);
+
+export const configHeadersAtom = atom<keyValueAtomType[]>([
   { id: uuidV4(), key: "", value: "", checked: true },
 ]);
 

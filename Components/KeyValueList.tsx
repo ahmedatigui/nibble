@@ -1,26 +1,35 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { useAtom, atom } from "jotai";
+import { useState } from "react";
+import { useAtom } from "jotai";
 import { v4 as uuidV4 } from "uuid";
 
 // Atoms
-import { configParamsAtom } from "@/utils/atoms";
+import { configHeadersAtom, configParamsAtom } from "@/utils/atoms";
 
 // Components
-// import * as Checkbox from "@radix-ui/react-checkbox";
 import { TextField, Button, Grid, Box, Checkbox } from "@radix-ui/themes";
-import { CheckIcon, TrashIcon } from "@radix-ui/react-icons";
-import { paramsAtomType } from "@/utils/types";
+import { TrashIcon } from "@radix-ui/react-icons";
+import { keyValueAtomType } from "@/utils/types";
 
-function KeyValueList({ order }: { order: number }) {
+type SetListType = (newList: keyValueAtomType[]) => void;
+
+function KeyValueList({
+  atomName,
+  order,
+}: {
+  atomName: string;
+  order: number;
+}) {
   const [fresh, setFresh] = useState(true);
 
-  const [list, setList] = useAtom(configParamsAtom);
+  const keyValueListAtom =
+    atomName === "params" ? configParamsAtom : configHeadersAtom;
+  const [list, setList] = useAtom(keyValueListAtom);
 
   const updateKey = (index: number, key: string) => {
     setList(
-      list.map((item: paramsAtomType, i: number) =>
+      list.map((item: keyValueAtomType, i: number) =>
         i === index ? { ...item, key } : item,
       ),
     );
@@ -28,7 +37,7 @@ function KeyValueList({ order }: { order: number }) {
 
   const updateValue = (index: number, value: string) => {
     setList(
-      list.map((item: paramsAtomType, i: number) =>
+      list.map((item: keyValueAtomType, i: number) =>
         i === index ? { ...item, value } : item,
       ),
     );
@@ -36,7 +45,7 @@ function KeyValueList({ order }: { order: number }) {
 
   const updateChecked = (index: number, checked: string | boolean) => {
     setList(
-      list.map((item: paramsAtomType, i: number) =>
+      list.map((item: keyValueAtomType, i: number) =>
         i === index ? { ...item, checked } : item,
       ),
     );
@@ -62,18 +71,6 @@ function KeyValueList({ order }: { order: number }) {
       className="keyValueListRow"
     >
       <Box>
-        {/* <input
-          className="key"
-          id="key"
-          placeholder="Key"
-          onChange={(e) => {
-            updateKey(order, e.target.value);
-            if (fresh) {
-              addItem();
-              setFresh(false);
-            }
-          }}
-        /> */}
         <TextField.Input
           width="100%"
           size="3"
@@ -89,18 +86,6 @@ function KeyValueList({ order }: { order: number }) {
         />
       </Box>
       <Box>
-        {/* <input
-          className="keyValueListInput value"
-          id="value"
-          placeholder="Value"
-          onChange={(e) => {
-            updateValue(order, e.target.value);
-            if (fresh) {
-              addItem();
-              setFresh(false);
-            }
-          }}
-        /> */}
         <TextField.Input
           width="100%"
           size="3"
@@ -123,23 +108,8 @@ function KeyValueList({ order }: { order: number }) {
           defaultChecked={!!fresh}
           onCheckedChange={(state) => updateChecked(order, state)}
         />
-        {/* <Checkbox.Root
-          className="CheckboxRoot"
-          defaultChecked={true}
-          onCheckedChange={(state) => updateChecked(order, state)}
-          id="c1"
-        >
-          <Checkbox.Indicator className="CheckboxIndicator">
-            <CheckIcon />
-          </Checkbox.Indicator>
-        </Checkbox.Root> */}
       </Box>
       <Box>
-        {/* <button>
-          <span>
-            <TrashIcon />
-          </span>
-        </button> */}
         <Button size="2" onClick={() => removeItem(order)}>
           <TrashIcon />
         </Button>

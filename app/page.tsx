@@ -9,8 +9,9 @@ import {
   httpRequestConfigAtom,
   httpResponseConfigAtom,
   configParamsAtom,
+  configHeadersAtom,
 } from "../utils/atoms";
-import { paramsAtomType } from "@/utils/types";
+import { keyValueAtomType, ReadyHeadersType } from "@/utils/types";
 
 // Components
 import KeyValueList from "@/Components/KeyValueList";
@@ -31,8 +32,13 @@ import {
 import { PaperPlaneIcon } from "@radix-ui/react-icons";
 
 export default function Home() {
-  const [rKVL, setRKVL] = useState<JSX.Element[] | null>(null);
+  const [renderedParamsKeyValueList, setRenderedParamsKeyValueList] = useState<
+    JSX.Element[] | null
+  >(null);
+  const [renderedHeadersKeyValueList, setRenderedHeadersKeyValueList] =
+    useState<JSX.Element[] | null>(null);
   const [configParams, setConfigParams] = useAtom(configParamsAtom);
+  const [configHeaders, setConfigHeaders] = useAtom(configHeadersAtom);
   const [httpRequestConfig, setHttpRequestConfig] = useAtom(
     httpRequestConfigAtom,
   );
@@ -41,12 +47,26 @@ export default function Home() {
   );
 
   async function handleSubmit() {
+    const readyParams = configParams
+      .filter((list) => list.checked && list.key.length && list.value.length)
+      .map((list) => new URLSearchParams({ [list.key]: list.value }));
+
+    let readyHeaders: ReadyHeadersType = {};
+    const filteredList = configHeaders.filter(
+      (list) => list.checked && list.key.length && list.value.length,
+    );
+    filteredList.forEach(
+      (list) => (readyHeaders[`${list.key}`] = `${list.value}`),
+    );
+
     try {
       setHttpResponseConfig((prev) => ({ ...prev, status: "loading" }));
       console.log(httpRequestConfig);
       const response: any = await createApiRequestFunction({
         apiURL: httpRequestConfig.apiURL,
         httpMethod: httpRequestConfig.httpMethod,
+        headers: readyHeaders,
+        params: readyParams,
       });
 
       const data: any = response.data;
@@ -67,16 +87,49 @@ export default function Home() {
     }
   }
 
-  const renderKeyValueLists = (): JSX.Element[] =>
-    configParams.map((list: paramsAtomType, ind: number) => (
-      <KeyValueList key={list.id} order={ind} />
+  const renderKeyValueLists = (
+    atomName: string,
+    theList: keyValueAtomType[],
+  ): JSX.Element[] =>
+    theList.map((list: keyValueAtomType, ind: number) => (
+      <KeyValueList key={list.id} atomName={atomName} order={ind} />
     ));
 
   useEffect(() => {
     console.log(configParams);
-    setRKVL(renderKeyValueLists());
+    setRenderedParamsKeyValueList(renderKeyValueLists("params", configParams));
+    const readyList = configParams
+      .filter((list) => list.checked && list.key.length && list.value.length)
+      .map((list) => new URLSearchParams({ [list.key]: list.value }));
+    console.log("READYLIST: ", readyList);
+    console.log("READYPARAM: ", readyList.length && readyList[0].toString());
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [configParams]);
+
+  useEffect(() => {
+    console.log(configHeaders);
+    setRenderedHeadersKeyValueList(
+      renderKeyValueLists("headers", configHeaders),
+    );
+    const readyList = configHeaders
+      .filter((list) => list.checked && list.key.length && list.value.length)
+      .map((list) => ({ [`${list.key}`]: `${list.value}` }));
+    console.log("READYLIST: ", readyList);
+
+    let readyHeaders: ReadyHeadersType = {};
+
+    const filteredList = configHeaders.filter(
+      (list) => list.checked && list.key.length && list.value.length,
+    );
+    filteredList.forEach(
+      (list) => (readyHeaders[`${list.key}`] = `${list.key}`),
+    );
+
+    console.log(readyHeaders);
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [configHeaders]);
 
   useEffect(() => console.log(httpRequestConfig), [httpRequestConfig]);
 
@@ -147,14 +200,15 @@ export default function Home() {
                 </Tabs.List>
                 <Tabs.Content value="tab1">
                   <div className="keyValueListContainer">
-                    {rKVL ?? renderKeyValueLists()}
+                    {renderedParamsKeyValueList ??
+                      renderKeyValueLists("params", configParams)}
                   </div>
                 </Tabs.Content>
                 <Tabs.Content value="tab2">
-                  <Text>
-                    Change your password here. After saving, you willl be logged
-                    out.
-                  </Text>
+                  <div className="keyValueListContainer">
+                    {renderedHeadersKeyValueList ??
+                      renderKeyValueLists("headers", configHeaders)}
+                  </div>
                 </Tabs.Content>
                 <Tabs.Content value="tab3">
                   <Text>

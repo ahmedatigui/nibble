@@ -6,13 +6,15 @@ export default async function createApiRequestFunction({
   apiURL,
   httpMethod = "GET",
   data,
+  headers,
+  params,
 }: httpRequestConfigType) {
   switch (httpMethod) {
     case "GET":
-      return await getApi({ apiURL, httpMethod });
+      return await getApi({ apiURL, httpMethod, headers, params });
       break;
     case "POST":
-      return await postApi({ apiURL, httpMethod, data });
+      return await postApi({ apiURL, httpMethod, data, headers, params });
       break;
     default:
       break;
@@ -20,9 +22,18 @@ export default async function createApiRequestFunction({
 }
 
 // GET
-async function getApi({ apiURL, httpMethod }: httpRequestConfigType) {
+async function getApi({
+  apiURL,
+  httpMethod,
+  headers,
+  params,
+}: httpRequestConfigType) {
   try {
-    const response = await axios.get(apiURL);
+    const response = await axios.get(apiURL, {
+      url: apiURL,
+      headers: headers,
+      params: params,
+    });
     return response;
   } catch (error) {
     return error;
@@ -35,9 +46,15 @@ async function postApi({
   httpMethod,
   data,
   config,
+  headers,
+  params,
 }: httpRequestConfigType) {
   try {
-    const response = await axios.post(apiURL, data, config);
+    const response = await axios.post(apiURL, data, {
+      url: apiURL,
+      headers: headers,
+      params: params,
+    });
     return response;
   } catch (error) {
     return error;

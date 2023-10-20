@@ -5,6 +5,8 @@ export interface httpRequestConfigType {
   httpMethod: string;
   data?: string | null | undefined;
   config?: AxiosRequestConfig;
+  headers?: any;
+  params?: any;
 }
 
 export interface httpResponseConfigType {
@@ -13,9 +15,13 @@ export interface httpResponseConfigType {
   error: unknown | null | undefined;
 }
 
-export interface paramsAtomType {
+export interface keyValueAtomType {
   id: string;
   key: string;
   value: string;
   checked: string | boolean;
+}
+
+export interface ReadyHeadersType {
+  [key: string]: string;
 }
