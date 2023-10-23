@@ -2,7 +2,7 @@ import { AxiosRequestConfig } from "axios";
 
 export interface httpRequestConfigType {
   apiURL: string;
-  httpMethod: string;
+  httpMethod: string | null;
   data?: string | null | undefined;
   config?: AxiosRequestConfig;
   headers?: any;

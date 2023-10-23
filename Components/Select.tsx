@@ -34,6 +34,7 @@ const SelectDemo = () => {
 export default SelectDemo;
 
 const HTTP_verbs = ["GET", "HEAD", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"];
+
 const options = HTTP_verbs.map((verb) => {
   return { label: verb, value: verb };
 });

@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useAtom } from "jotai";
 
 // Utils
@@ -15,17 +15,22 @@ import { keyValueAtomType, ReadyHeadersType } from "@/utils/types";
 
 // Components
 import KeyValueList from "@/Components/KeyValueList";
-import SelectDemo from "../Components/Select";
+import SelectDemo from "@/Components/Select";
+import ReqBodyTabContent from "@/Components/Tabs/ReqBodyTabContent";
+import ReqParamsTabContent from "@/Components/Tabs/ReqParamsTabContent";
+import ReqHeadersTabContent from "@/Components/Tabs/ReqHeadersTabContent";
+import ReqAuthTabContent from "@/Components/Tabs/ReqAuthTabContent";
+import ResBodyJSONTabContent from "@/Components/Tabs/ResBodyJSONTabContent";
+import ResBodyRawTabContent from "@/Components/Tabs/ResBodyRawTabContent";
+import ResHeadersTabContent from "@/Components/Tabs/ResHeadersTabContent";
 import {
   Box,
   TextField,
   Button,
   Text,
   Tabs,
-  Code,
   Flex,
   Grid,
-  ScrollArea,
 } from "@radix-ui/themes";
 
 // Icons
@@ -123,7 +128,7 @@ export default function Home() {
       (list) => list.checked && list.key.length && list.value.length,
     );
     filteredList.forEach(
-      (list) => (readyHeaders[`${list.key}`] = `${list.key}`),
+      (list) => (readyHeaders[`${list.key}`] = `${list.value}`),
     );
 
     console.log(readyHeaders);
@@ -158,7 +163,7 @@ export default function Home() {
               <TextField.Root>
                 <TextField.Input
                   id="Url"
-                  defaultValue="https://jsonplaceholder.typicode.com/users"
+                  defaultValue="https://jsonplaceholder.typicode.com/users/1"
                   onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                     setHttpRequestConfig((prev) => ({
                       ...prev,
@@ -199,28 +204,24 @@ export default function Home() {
                   <Tabs.Trigger value="tab4">Body</Tabs.Trigger>
                 </Tabs.List>
                 <Tabs.Content value="tab1">
-                  <div className="keyValueListContainer">
-                    {renderedParamsKeyValueList ??
-                      renderKeyValueLists("params", configParams)}
-                  </div>
+                  <ReqParamsTabContent
+                    renderedParamsKeyValueList={renderedParamsKeyValueList}
+                    renderKeyValueLists={renderKeyValueLists}
+                    configParams={configParams}
+                  />
                 </Tabs.Content>
                 <Tabs.Content value="tab2">
-                  <div className="keyValueListContainer">
-                    {renderedHeadersKeyValueList ??
-                      renderKeyValueLists("headers", configHeaders)}
-                  </div>
+                  <ReqHeadersTabContent
+                    renderedHeadersKeyValueList={renderedHeadersKeyValueList}
+                    renderKeyValueLists={renderKeyValueLists}
+                    configHeaders={configHeaders}
+                  />
                 </Tabs.Content>
                 <Tabs.Content value="tab3">
-                  <Text>
-                    Change your password here. After saving, you willl be logged
-                    out.
-                  </Text>
+                  <ReqAuthTabContent />
                 </Tabs.Content>
                 <Tabs.Content value="tab4">
-                  <Text>
-                    Change your password here. After saving, you willl be logged
-                    out.
-                  </Text>
+                  <ReqBodyTabContent />
                 </Tabs.Content>
               </Tabs.Root>
             </Box>
@@ -233,36 +234,16 @@ export default function Home() {
                   <Tabs.Trigger value="tab4">Stats</Tabs.Trigger>
                 </Tabs.List>
                 <Tabs.Content value="tab1">
-                  <Box p="4">
-                    <Code>
-                      {httpResponseConfig.status === "hasData"
-                        ? `${JSON.stringify(
-                            httpResponseConfig.data,
-                            null,
-                            "\n",
-                          )}`
-                        : `${httpResponseConfig.error}` ??
-                          `${httpResponseConfig.status}`}
-                    </Code>
-                  </Box>
+                  <ResBodyJSONTabContent />
                 </Tabs.Content>
                 <Tabs.Content value="tab2">
-                  <Text>
-                    Change your password here. After saving, you willl be logged
-                    out.
-                  </Text>
+                  <ResBodyRawTabContent />
                 </Tabs.Content>
                 <Tabs.Content value="tab3">
-                  <Text>
-                    Change your password here. After saving, you willl be logged
-                    out.
-                  </Text>
+                  <ResHeadersTabContent />
                 </Tabs.Content>
                 <Tabs.Content value="tab4">
-                  <Text>
-                    Change your password here. After saving, you willl be logged
-                    out.
-                  </Text>
+                  <ResHeadersTabContent />
                 </Tabs.Content>
               </Tabs.Root>
             </Box>

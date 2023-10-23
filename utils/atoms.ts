@@ -7,8 +7,9 @@ import {
 } from "./types";
 
 export const httpRequestConfigAtom = atom<httpRequestConfigType>({
-  apiURL: "https://jsonplaceholder.typicode.com/users",
+  apiURL: "https://jsonplaceholder.typicode.com/users/1",
   httpMethod: "GET",
+  data: null,
 });
 
 export const httpResponseConfigAtom = atom<httpResponseConfigType>({
