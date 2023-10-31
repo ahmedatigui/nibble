@@ -37,7 +37,7 @@ import {
 // Icons
 import { PaperPlaneIcon } from "@radix-ui/react-icons";
 
-export default function Home() {
+export default function ApiRequestPanel({ tab }) {
   const [renderedParamsKeyValueList, setRenderedParamsKeyValueList] = useState<
     JSX.Element[] | null
   >(null);
@@ -140,13 +140,7 @@ export default function Home() {
   useEffect(() => console.log(httpRequestConfig), [httpRequestConfig]);
 
   return (
-    <Grid rows="auto 1fr" gap="4" className="h-screen overflow-hidden">
-      <Box p="4">Nibble</Box>
-      <Grid columns="auto 1fr" gap="4">
-        <Box>
-          <FileManager />
-        </Box>
-        <Grid rows="auto 1fr" gap="4">
+        <>
           <Grid columns="1fr auto" gap="4">
             <Grid columns="auto 1fr auto">
               <SelectDemo />
@@ -238,8 +232,6 @@ export default function Home() {
               </Tabs.Root>
             </Box>
           </Grid>
-        </Grid>
-      </Grid>
-    </Grid>
+        </>
   );
 }

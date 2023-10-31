@@ -5,6 +5,7 @@ import {
   httpResponseConfigType,
   keyValueAtomType,
 } from "./types";
+import { data } from "./data";
 
 export const httpRequestConfigAtom = atom<httpRequestConfigType>({
   apiURL: "https://jsonplaceholder.typicode.com/users/1",
@@ -27,3 +28,7 @@ export const configHeadersAtom = atom<keyValueAtomType[]>([
 ]);
 
 export const environmentVariablesAtom = atom({});
+
+
+export const currentActiveLeafAtom = atom("tab-0");
+export const currentFocusedLeafAtom = atom(data);

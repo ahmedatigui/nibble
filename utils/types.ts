@@ -25,3 +25,10 @@ export interface keyValueAtomType {
 export interface ReadyHeadersType {
   [key: string]: string;
 }
+
+
+export type FileManagerDataType = {
+  id: string;
+  name: string;
+  children?: FileManagerDataType[];
+};
