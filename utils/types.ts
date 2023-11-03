@@ -26,9 +26,29 @@ export interface ReadyHeadersType {
   [key: string]: string;
 }
 
-
 export type FileManagerDataType = {
   id: string;
   name: string;
   children?: FileManagerDataType[];
+};
+
+export type APIRequestDataType = {
+  method: string;
+  url: string;
+  request: {
+    params: any;
+    headers: any;
+    auth: any;
+    body: any;
+  };
+  response: {
+    typed: any;
+    raw: any;
+    headers: any;
+    stats: any;
+  };
+};
+
+export type APIRequestDataMapType = {
+  [key: string]: APIRequestDataType;
 };

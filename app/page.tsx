@@ -17,6 +17,7 @@ import { keyValueAtomType, ReadyHeadersType } from "@/utils/types";
 import KeyValueList from "@/Components/KeyValueList";
 import SelectDemo from "@/Components/Select";
 import FileManager from "@/Components/FileManager";
+import FileTabs from "@/Components/FileTabs";
 import ReqBodyTabContent from "@/Components/Tabs/ReqBodyTabContent";
 import ReqParamsTabContent from "@/Components/Tabs/ReqParamsTabContent";
 import ReqHeadersTabContent from "@/Components/Tabs/ReqHeadersTabContent";
@@ -147,97 +148,7 @@ export default function Home() {
           <FileManager />
         </Box>
         <Grid rows="auto 1fr" gap="4">
-          <Grid columns="1fr auto" gap="4">
-            <Grid columns="auto 1fr auto">
-              <SelectDemo />
-              <TextField.Root>
-                <TextField.Input
-                  id="Url"
-                  defaultValue="https://jsonplaceholder.typicode.com/users/1"
-                  onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                    setHttpRequestConfig((prev) => ({
-                      ...prev,
-                      apiURL: e.target.value,
-                    }))
-                  }
-                />
-              </TextField.Root>
-              <Button onClick={() => handleSubmit()}>
-                <PaperPlaneIcon />
-              </Button>
-            </Grid>
-            <Flex
-              direction="row"
-              justify="between"
-              align="center"
-              gap="2"
-              px="4"
-            >
-              <Text size="3" align="center">
-                200 OK
-              </Text>
-              <Text size="3" align="center">
-                75ms
-              </Text>
-              <Text size="3" align="center">
-                2.14kb
-              </Text>
-            </Flex>
-          </Grid>
-          <Grid columns="1fr 1fr" gap="4">
-            <Box>
-              <Tabs.Root defaultValue="tab1">
-                <Tabs.List aria-label="Manage your account">
-                  <Tabs.Trigger value="tab1">Params</Tabs.Trigger>
-                  <Tabs.Trigger value="tab2">Headers</Tabs.Trigger>
-                  <Tabs.Trigger value="tab3">Auth</Tabs.Trigger>
-                  <Tabs.Trigger value="tab4">Body</Tabs.Trigger>
-                </Tabs.List>
-                <Tabs.Content value="tab1">
-                  <ReqParamsTabContent
-                    renderedParamsKeyValueList={renderedParamsKeyValueList}
-                    renderKeyValueLists={renderKeyValueLists}
-                    configParams={configParams}
-                  />
-                </Tabs.Content>
-                <Tabs.Content value="tab2">
-                  <ReqHeadersTabContent
-                    renderedHeadersKeyValueList={renderedHeadersKeyValueList}
-                    renderKeyValueLists={renderKeyValueLists}
-                    configHeaders={configHeaders}
-                  />
-                </Tabs.Content>
-                <Tabs.Content value="tab3">
-                  <ReqAuthTabContent />
-                </Tabs.Content>
-                <Tabs.Content value="tab4">
-                  <ReqBodyTabContent />
-                </Tabs.Content>
-              </Tabs.Root>
-            </Box>
-            <Box>
-              <Tabs.Root defaultValue="tab1">
-                <Tabs.List aria-label="Manage your account">
-                  <Tabs.Trigger value="tab1">JSON</Tabs.Trigger>
-                  <Tabs.Trigger value="tab2">Raw</Tabs.Trigger>
-                  <Tabs.Trigger value="tab3">Headers</Tabs.Trigger>
-                  <Tabs.Trigger value="tab4">Stats</Tabs.Trigger>
-                </Tabs.List>
-                <Tabs.Content value="tab1">
-                  <ResBodyJSONTabContent />
-                </Tabs.Content>
-                <Tabs.Content value="tab2">
-                  <ResBodyRawTabContent />
-                </Tabs.Content>
-                <Tabs.Content value="tab3">
-                  <ResHeadersTabContent />
-                </Tabs.Content>
-                <Tabs.Content value="tab4">
-                  <ResHeadersTabContent />
-                </Tabs.Content>
-              </Tabs.Root>
-            </Box>
-          </Grid>
+          <FileTabs />
         </Grid>
       </Grid>
     </Grid>

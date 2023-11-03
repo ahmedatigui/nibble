@@ -29,6 +29,7 @@ export const configHeadersAtom = atom<keyValueAtomType[]>([
 
 export const environmentVariablesAtom = atom({});
 
-
 export const currentActiveLeafAtom = atom("tab-0");
 export const currentFocusedLeafAtom = atom(data);
+
+// export const APIRequestDataAtom = atom<>({index_0: {}});

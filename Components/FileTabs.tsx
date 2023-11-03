@@ -1,28 +1,29 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { useAtom } from "jotai";
 
 // Components
 import ApiRequestPanel from "./ApiRequestPanel";
-import * as Tabs from "@radix-ui/react-tabs";
-import { Grid } from "@radix-ui/themes";
+import { Grid, Tabs } from "@radix-ui/themes";
 
 // Utils
 import { currentActiveLeafAtom, currentFocusedLeafAtom } from "../utils/atoms";
 import { data } from "../utils/data";
+import { FileManagerDataType } from "../utils/types";
 
-const TabsDemo = () => {
+export default function FileTabs() {
   const [currentActiveLeaf, setCurrentActiveLeaf] = useAtom(
-    currentActiveLeafAtom
+    currentActiveLeafAtom,
   );
 
   const [currentFocusedLeaf, setCurrentFocusedLeaf] = useAtom(
-    currentFocusedLeafAtom
+    currentFocusedLeafAtom,
   );
-  const [activeLeaf, setActiveLeaf] = React.useState();
-  const [focusedLeaf, setFocusedLeaf] = React.useState(currentFocusedLeaf);
+  const [activeLeaf, setActiveLeaf] = useState<string>();
+  const [focusedLeaf, setFocusedLeaf] = useState(currentFocusedLeaf);
+  const [tab, setTab] = useState(activeLeaf);
 
   const renderFocusedTabsTrigger = () =>
-    currentFocusedLeaf.map((leaf) => (
+    currentFocusedLeaf.map((leaf: FileManagerDataType) => (
       <Tabs.Trigger
         className="TabsTrigger"
         value={`tab-${leaf.id}`}
@@ -47,31 +48,35 @@ const TabsDemo = () => {
       </Tabs.Content>
     ));
 
-  React.useEffect(() => {
+  useEffect(() => {
     const trigger = renderFocusedTabsTrigger();
     const content = renderFocusedTabsContent();
     setFocusedLeaf({
       trigger: trigger,
-      content: content
+      content: content,
     });
     setActiveLeaf(currentActiveLeaf);
   }, []);
 
-  React.useEffect(() => {
+  useEffect(() => {
     const trigger = renderFocusedTabsTrigger();
     const content = renderFocusedTabsContent();
     setFocusedLeaf({
       trigger: trigger,
-      content: content
+      content: content,
     });
     console.log("TABS_FOCUSED: ", currentFocusedLeaf);
   }, [currentFocusedLeaf]);
 
-  React.useEffect(() => setActiveLeaf(currentActiveLeaf), [currentActiveLeaf]);
+  useEffect(() => setActiveLeaf(currentActiveLeaf), [currentActiveLeaf]);
 
   return (
     <Grid rows="auto auto 1fr" gap="4">
-      <Tabs.Root className="TabsRoot" value={activeLeaf}>
+      <Tabs.Root
+        className="TabsRoot"
+        value={activeLeaf}
+        onValueChange={(value) => setTab(value)}
+      >
         <Tabs.List className="TabsList" aria-label="Manage your account">
           {focusedLeaf.trigger}
         </Tabs.List>
@@ -79,7 +84,4 @@ const TabsDemo = () => {
       </Tabs.Root>
     </Grid>
   );
-};
-
-export default TabsDemo;
-
+}

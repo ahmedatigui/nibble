@@ -150,41 +150,14 @@ function Input({ node }: { node: NodeApi<FileManagerDataType> }) {
     console.log("doesNameExist: ", doesNameExist);
     if (e.key === "Escape") node.reset();
     if (e.key === "Enter") {
-      if (
-        !node.isInternal &&
-        isNameValueEmpty === false &&
-        doesNameExist === true
-      ) {
-        setCurrentFocusedLeaf((current) => [
-          ...current,
-          {
-            id: node.data.id,
-            name: `${e.currentTarget.value}-copy-${node.data.id}`,
-          },
-        ]);
-        node.submit(`${e.currentTarget.value}-copy-${node.data.id}`);
-      } else if (
-        !node.isInternal &&
-        doesNameExist === false &&
-        isNameValueEmpty === false
-      ) {
+      if (!node.isInternal && isNameValueEmpty === false) {
         setCurrentFocusedLeaf((current) => [
           ...current,
           { id: node.data.id, name: e.currentTarget.value },
         ]);
         node.submit(e.currentTarget.value);
-      } else if (
-        node.isInternal &&
-        doesNameExist === false &&
-        isNameValueEmpty === false
-      ) {
+      } else if (node.isInternal && isNameValueEmpty === false) {
         node.submit(e.currentTarget.value);
-      } else if (
-        node.isInternal &&
-        doesNameExist === true &&
-        isNameValueEmpty === false
-      ) {
-        node.submit(`${e.currentTarget.value}-copy-${node.data.id}`);
       }
       console.info(node.data.id, node.data.name, node.isInternal);
     }
@@ -267,13 +240,13 @@ const DropdownMenuFile = ({
             className="DropdownMenuItem"
             onSelect={() => node.edit()}
           >
-            Rename <div className="RightSlot">⇧+⌘+N</div>
+            Rename
           </DropdownMenu.Item>
           <DropdownMenu.Item
             className="DropdownMenuItem"
             onSelect={() => tree.delete(node.id)}
           >
-            Delete Request <div className="RightSlot">⌘+N</div>
+            Delete Request
           </DropdownMenu.Item>
         </DropdownMenu.Content>
       </DropdownMenu.Portal>
@@ -302,19 +275,19 @@ const DropdownMenuFolder = ({
             className="DropdownMenuItem"
             onSelect={() => tree.createLeaf()}
           >
-            New File <div className="RightSlot">⌘+T</div>
+            New File
           </DropdownMenu.Item>
           <DropdownMenu.Item
             className="DropdownMenuItem"
             onSelect={() => tree.delete(node.id)}
           >
-            Delete Folder <div className="RightSlot">⌘+N</div>
+            Delete Folder
           </DropdownMenu.Item>
           <DropdownMenu.Item
             className="DropdownMenuItem"
             onSelect={() => node.edit()}
           >
-            Rename <div className="RightSlot">⇧+⌘+N</div>
+            Rename
           </DropdownMenu.Item>
         </DropdownMenu.Content>
       </DropdownMenu.Portal>
