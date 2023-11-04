@@ -10,6 +10,7 @@ import {
   httpResponseConfigAtom,
   configParamsAtom,
   configHeadersAtom,
+  APIRequestDataMapAtom
 } from "../utils/atoms";
 import { keyValueAtomType, ReadyHeadersType } from "@/utils/types";
 
@@ -52,6 +53,9 @@ export default function ApiRequestPanel({ tab }: { tab: string }) {
     httpResponseConfigAtom,
   );
 
+  // New Data strcuture Atom
+  const [APIRequestDataMap, setAPIRequestDataMap] = useAtom(APIRequestDataMapAtom);
+
   async function handleSubmit() {
     const readyParams = configParams
       .filter((list) => list.checked && list.key.length && list.value.length)
@@ -69,8 +73,8 @@ export default function ApiRequestPanel({ tab }: { tab: string }) {
       setHttpResponseConfig((prev) => ({ ...prev, status: "loading" }));
       console.log(httpRequestConfig);
       const response: any = await createApiRequestFunction({
-        apiURL: httpRequestConfig.apiURL,
-        httpMethod: httpRequestConfig.httpMethod,
+        apiURL: APIRequestDataMap[tab].url,
+        httpMethod: APIRequestDataMap[tab].method,
         headers: readyHeaders,
         params: readyParams,
       });
@@ -138,6 +142,8 @@ export default function ApiRequestPanel({ tab }: { tab: string }) {
   }, [configHeaders]);
 
   useEffect(() => console.log(httpRequestConfig), [httpRequestConfig]);
+
+  console.info(tab, APIRequestDataMap, APIRequestDataMap[tab]);
 
   return (
     <>

@@ -14,15 +14,15 @@ import { Button, TextFieldInput, Tooltip } from "@radix-ui/themes";
 // Utils
 import { data } from "../utils/data";
 import { FileManagerDataType } from "../utils/types";
-import { currentActiveLeafAtom, currentFocusedLeafAtom } from "../utils/atoms";
+import { currentActiveLeafAtom, currentLeafsAtom } from "../utils/atoms";
 
 export default function FileManager() {
   const [term, setTerm] = useState<string | undefined>();
   const [currentActiveLeaf, setCurrentActiveLeaf] = useAtom(
     currentActiveLeafAtom,
   );
-  const [currentFocusedLeaf, setCurrentFocusedLeaf] = useAtom(
-    currentFocusedLeafAtom,
+  const [currentLeafs, setCurrentLeafs] = useAtom(
+    currentLeafsAtom,
   );
   const treeRef = useRef<TreeApi<FileManagerDataType> | null>();
 
@@ -54,17 +54,17 @@ export default function FileManager() {
       isNameValueEmpty === false &&
       doesNameExist === true
     ) {
-      setCurrentFocusedLeaf((current) => [
+      setCurrentLeafs((current) => [
         ...current,
         { id: node.data.id, name: `${node.data.name}-copy-${node.data.id}` },
       ]);
     } else if (!node.isInternal && isNameValueEmpty === false) {
-      setCurrentFocusedLeaf((current) => [
+      setCurrentLeafs((current) => [
         ...current,
         { id: node.data.id, name: node.data.name },
       ]);
     }
-    console.log("FOCUSED: ", currentFocusedLeaf);
+    console.log("FOCUSED: ", currentLeafs);
   };
 
   return (
@@ -100,6 +100,7 @@ function Node({
     if (node.isInternal) node.toggle();
     else if (node.isSelected && node.isLeaf) {
       node.activate();
+      console.info("NODE ID: ", node.data.id);
     }
   };
 
@@ -137,11 +138,11 @@ function Node({
 }
 
 function Input({ node }: { node: NodeApi<FileManagerDataType> }) {
-  const [currentFocusedLeaf, setCurrentFocusedLeaf] = useAtom(
-    currentFocusedLeafAtom,
+  const [currentLeafs, setCurrentLeafs] = useAtom(
+    currentLeafsAtom,
   );
 
-  const handleKeyDown = (e) => {
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     const isNameValueEmpty = Boolean(e.currentTarget.value.length === 0);
     const doesNameExist = data.some(
       (item) => item.name === e.currentTarget.value,
@@ -151,7 +152,7 @@ function Input({ node }: { node: NodeApi<FileManagerDataType> }) {
     if (e.key === "Escape") node.reset();
     if (e.key === "Enter") {
       if (!node.isInternal && isNameValueEmpty === false) {
-        setCurrentFocusedLeaf((current) => [
+        setCurrentLeafs((current) => [
           ...current,
           { id: node.data.id, name: e.currentTarget.value },
         ]);
@@ -190,19 +191,19 @@ const Nav = ({
   term,
   setTerm,
 }: {
-  tree: TreeApi<FileManagerDataType>;
+  tree: TreeApi<FileManagerDataType> | null | undefined;
   term: string | undefined;
   setTerm: React.Dispatch<React.SetStateAction<string | undefined>>;
 }) => {
   return (
     <>
       <Tooltip content="Add New Request">
-        <Button className="button" onClick={() => tree.createLeaf()}>
+        <Button className="button" onClick={() => tree?.createLeaf()}>
           New Request
         </Button>
       </Tooltip>
       <Tooltip content="Add New Folder">
-        <Button className="button" onClick={() => tree.createInternal()}>
+        <Button className="button" onClick={() => tree?.createInternal()}>
           New Folder
         </Button>
       </Tooltip>
