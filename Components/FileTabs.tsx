@@ -15,10 +15,8 @@ export default function FileTabs() {
     currentActiveLeafAtom,
   );
 
-  const [currentFocusedLeaf, setCurrentFocusedLeaf] = useAtom(
-    currentLeafsAtom,
-  );
-  
+  const [currentFocusedLeaf, setCurrentFocusedLeaf] = useAtom(currentLeafsAtom);
+
   const [tab, setTab] = useState(currentActiveLeaf);
   const [tabList, setTabList] = useState<React.JSX.Element[]>();
 
@@ -39,11 +37,7 @@ export default function FileTabs() {
 
   const renderFocusedTabsContent = () =>
     currentFocusedLeaf.map((leaf) => (
-      <Tabs.Content
-        className="TabsContent"
-        value={leaf.id}
-        key={leaf.id}
-      >
+      <Tabs.Content className="TabsContent" value={leaf.id} key={leaf.id}>
         Content: {leaf.name}
       </Tabs.Content>
     ));
@@ -61,7 +55,10 @@ export default function FileTabs() {
       <Tabs.Root
         className="TabsRoot"
         value={currentActiveLeaf}
-        onValueChange={(value) => {setTab(value); console.info("TABTRIGGER: ", value);}}
+        onValueChange={(value) => {
+          setTab(value);
+          console.info("TABTRIGGER: ", value);
+        }}
       >
         <Tabs.List className="TabsList" aria-label="Manage your account">
           {tabList}

@@ -4,7 +4,7 @@ import {
   httpRequestConfigType,
   httpResponseConfigType,
   keyValueAtomType,
-  APIRequestDataMapType
+  APIRequestDataMapType,
 } from "./types";
 import { data } from "./data";
 
@@ -30,22 +30,26 @@ export const configHeadersAtom = atom<keyValueAtomType[]>([
 
 export const environmentVariablesAtom = atom({});
 
-export const currentActiveLeafAtom = atom("tab-0");
+export const currentActiveLeafAtom = atom("tab-simple-tree-id-initial");
 export const currentLeafsAtom = atom(data);
 
-export const APIRequestDataMapAtom = atom<APIRequestDataMapType>({"tab-simple-tree-id-initial": {
-  method: "GET",
-  url: `https://jsonplaceholder.typicode.com/users/${Math.random() * 100}`,
-  request: {
-    params: null,
-    headers: null,
-    auth: null,
-    body: null,
+export const APIRequestDataMapAtom = atom<APIRequestDataMapType>({
+  "tab-simple-tree-id-initial": {
+    method: "GET",
+    url: `https://jsonplaceholder.typicode.com/users/${Math.round(
+      Math.random() * 10,
+    )}`,
+    request: {
+      params: [{ id: uuidV4(), key: "", value: "", checked: true }],
+      headers: [{ id: uuidV4(), key: "", value: "", checked: true }],
+      auth: null,
+      body: null,
+    },
+    response: {
+      typed: null,
+      raw: null,
+      headers: null,
+      stats: null,
+    },
   },
-  response: {
-    typed: null,
-    raw: null,
-    headers: null,
-    stats: null,
-  },
-}});
+});

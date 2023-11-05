@@ -10,7 +10,7 @@ import {
   httpResponseConfigAtom,
   configParamsAtom,
   configHeadersAtom,
-  APIRequestDataMapAtom
+  APIRequestDataMapAtom,
 } from "../utils/atoms";
 import { keyValueAtomType, ReadyHeadersType } from "@/utils/types";
 
@@ -54,7 +54,9 @@ export default function ApiRequestPanel({ tab }: { tab: string }) {
   );
 
   // New Data strcuture Atom
-  const [APIRequestDataMap, setAPIRequestDataMap] = useAtom(APIRequestDataMapAtom);
+  const [APIRequestDataMap, setAPIRequestDataMap] = useAtom(
+    APIRequestDataMapAtom,
+  );
 
   async function handleSubmit() {
     const readyParams = configParams
@@ -102,7 +104,7 @@ export default function ApiRequestPanel({ tab }: { tab: string }) {
     theList: keyValueAtomType[],
   ): JSX.Element[] =>
     theList.map((list: keyValueAtomType, ind: number) => (
-      <KeyValueList key={list.id} atomName={atomName} order={ind} />
+      <KeyValueList key={list.id} atomName={atomName} order={ind} tab={tab} />
     ));
 
   useEffect(() => {
@@ -143,7 +145,14 @@ export default function ApiRequestPanel({ tab }: { tab: string }) {
 
   useEffect(() => console.log(httpRequestConfig), [httpRequestConfig]);
 
-  console.info(tab, APIRequestDataMap, APIRequestDataMap[tab]);
+  useEffect(() =>
+    console.info(
+      "ApiRequestPanel: ",
+      tab,
+      APIRequestDataMap,
+      APIRequestDataMap[`${tab}`],
+    ),
+  );
 
   return (
     <>
@@ -153,7 +162,10 @@ export default function ApiRequestPanel({ tab }: { tab: string }) {
           <TextField.Root>
             <TextField.Input
               id="Url"
-              defaultValue="https://jsonplaceholder.typicode.com/users/1"
+              defaultValue={`${
+                APIRequestDataMap[`${tab}`]?.url ??
+                "https://jsonplaceholder.typicode.com/users/1"
+              }`}
               onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                 setHttpRequestConfig((prev) => ({
                   ...prev,

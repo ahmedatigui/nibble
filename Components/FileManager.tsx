@@ -14,16 +14,18 @@ import { Button, TextFieldInput, Tooltip } from "@radix-ui/themes";
 // Utils
 import { data } from "../utils/data";
 import { FileManagerDataType } from "../utils/types";
-import { currentActiveLeafAtom, currentLeafsAtom } from "../utils/atoms";
+import {
+  APIRequestDataMapAtom,
+  currentActiveLeafAtom,
+  currentLeafsAtom,
+} from "../utils/atoms";
 
 export default function FileManager() {
   const [term, setTerm] = useState<string | undefined>();
   const [currentActiveLeaf, setCurrentActiveLeaf] = useAtom(
     currentActiveLeafAtom,
   );
-  const [currentLeafs, setCurrentLeafs] = useAtom(
-    currentLeafsAtom,
-  );
+  const [currentLeafs, setCurrentLeafs] = useAtom(currentLeafsAtom);
   const treeRef = useRef<TreeApi<FileManagerDataType> | null>();
 
   useEffect(
@@ -138,8 +140,9 @@ function Node({
 }
 
 function Input({ node }: { node: NodeApi<FileManagerDataType> }) {
-  const [currentLeafs, setCurrentLeafs] = useAtom(
-    currentLeafsAtom,
+  const [currentLeafs, setCurrentLeafs] = useAtom(currentLeafsAtom);
+  const [APIRequestDataMap, setAPIRequestDataMap] = useAtom(
+    APIRequestDataMapAtom,
   );
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
@@ -156,6 +159,27 @@ function Input({ node }: { node: NodeApi<FileManagerDataType> }) {
           ...current,
           { id: node.data.id, name: e.currentTarget.value },
         ]);
+        setAPIRequestDataMap((prevState) => ({
+          ...prevState,
+          [`${node.data.id}`]: {
+            method: "GET",
+            url: `https://jsonplaceholder.typicode.com/users/${Math.round(
+              Math.random() * 10,
+            )}`,
+            request: {
+              params: null,
+              headers: null,
+              auth: null,
+              body: null,
+            },
+            response: {
+              typed: null,
+              raw: null,
+              headers: null,
+              stats: null,
+            },
+          },
+        }));
         node.submit(e.currentTarget.value);
       } else if (node.isInternal && isNameValueEmpty === false) {
         node.submit(e.currentTarget.value);
