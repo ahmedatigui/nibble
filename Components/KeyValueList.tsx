@@ -30,27 +30,28 @@ function KeyValueList({
 }) {
   const [fresh, setFresh] = useState(true);
 
-  const keyValueListAtom =
-    atomName === "params" ? configParamsAtom : configHeadersAtom;
+  // const keyValueListAtom =
+  //   atomName === "params" ? configParamsAtom : configHeadersAtom;
 
-  const [list, setList] = useAtom(keyValueListAtom);
+  // const [list, setList] = useAtom(keyValueListAtom);
   const [APIRequestDataMap, setAPIRequestDataMap] = useAtom(
     APIRequestDataMapAtom,
   );
 
   const updateKey = (index: number, key: string) => {
-    setList(
-      list.map((item: keyValueAtomType, i: number) =>
-        i === index ? { ...item, key } : item,
-      ),
-    );
+    // setList(
+    //   list.map((item: keyValueAtomType, i: number) =>
+    //     i === index ? { ...item, key } : item,
+    //   ),
+    // );
     if (atomName === "params") {
       setAPIRequestDataMap((prevState) =>
         produce(prevState, (draftState: Draft<APIRequestDataMapType>) => {
-          draftState[tab].request.params = list.map(
-            (item: keyValueAtomType, i: number) =>
-              i === index ? { ...item, key } : item,
-          );
+          // draftState[tab].request.params = list.map(
+          //   (item: keyValueAtomType, i: number) =>
+          //     i === index ? { ...item, key } : item,
+          // );
+          draftState[tab].request.params[index].key = key;
         }),
       );
     } else {
@@ -65,11 +66,11 @@ function KeyValueList({
   };
 
   const updateValue = (index: number, value: string) => {
-    setList(
-      list.map((item: keyValueAtomType, i: number) =>
-        i === index ? { ...item, value } : item,
-      ),
-    );
+    // setList(
+    //   list.map((item: keyValueAtomType, i: number) =>
+    //     i === index ? { ...item, value } : item,
+    //   ),
+    // );
     if (atomName === "params") {
       setAPIRequestDataMap((prevState) =>
         produce(prevState, (draftState: Draft<APIRequestDataMapType>) => {
@@ -90,11 +91,11 @@ function KeyValueList({
   };
 
   const updateChecked = (index: number, checked: string | boolean) => {
-    setList(
-      list.map((item: keyValueAtomType, i: number) =>
-        i === index ? { ...item, checked } : item,
-      ),
-    );
+    // setList(
+    //   list.map((item: keyValueAtomType, i: number) =>
+    //     i === index ? { ...item, checked } : item,
+    //   ),
+    // );
     if (atomName === "params") {
       setAPIRequestDataMap((prevState) =>
         produce(prevState, (draftState: Draft<APIRequestDataMapType>) => {
@@ -115,7 +116,7 @@ function KeyValueList({
   };
 
   const addItem = () => {
-    setList([...list, { id: uuidV4(), key: "", value: "", checked: true }]);
+    // setList([...list, { id: uuidV4(), key: "", value: "", checked: true }]);
     if (atomName === "params") {
       setAPIRequestDataMap((prevState) =>
         produce(prevState, (draftState: Draft<APIRequestDataMapType>) => {
@@ -142,10 +143,10 @@ function KeyValueList({
   };
 
   const removeItem = (index: number) => {
-    console.log("Will remove: ", index);
-    const ele = list.filter((_, i) => i !== index);
-    console.log("New list: ", ele);
-    setList(ele);
+    // console.log("Will remove: ", index);
+    // const ele = list.filter((_, i) => i !== index);
+    // console.log("New list: ", ele);
+    // setList(ele);
     if (atomName === "params") {
       setAPIRequestDataMap((prevState) =>
         produce(prevState, (draftState: Draft<APIRequestDataMapType>) => {

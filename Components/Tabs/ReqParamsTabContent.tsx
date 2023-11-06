@@ -2,21 +2,26 @@
 import { Box } from "@radix-ui/themes";
 
 // Utils
-import { keyValueAtomType } from "@/utils/types";
+import { keyValueAtomType, APIRequestDataMapType } from "@/utils/types";
 
 export default function ReqParamsTabContent({
   renderedParamsKeyValueList,
   renderKeyValueLists,
-  configParams,
+  APIRequestDataMap,
+  tab,
 }: {
   renderedParamsKeyValueList: JSX.Element[] | null;
   renderKeyValueLists: Function;
-  configParams: keyValueAtomType[];
+  APIRequestDataMap: APIRequestDataMapType;
+  tab: string;
 }) {
   return (
     <Box className="keyValueListContainer">
       {renderedParamsKeyValueList ??
-        renderKeyValueLists("params", configParams)}
+        renderKeyValueLists(
+          "params",
+          APIRequestDataMap[`${tab}`].request.params,
+        )}
     </Box>
   );
 }

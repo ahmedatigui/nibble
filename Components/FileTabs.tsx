@@ -63,7 +63,9 @@ export default function FileTabs() {
         <Tabs.List className="TabsList" aria-label="Manage your account">
           {tabList}
         </Tabs.List>
-        <ApiRequestPanel tab={tab} />
+        <Tabs.Content className="TabsContent" value={tab}>
+          <ApiRequestPanel tab={tab} />
+        </Tabs.Content>
       </Tabs.Root>
     </Grid>
   );

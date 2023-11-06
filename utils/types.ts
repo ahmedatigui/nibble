@@ -36,8 +36,8 @@ export type APIRequestDataType = {
   method: string;
   url: string;
   request: {
-    params: any;
-    headers: any;
+    params: keyValueAtomType[];
+    headers: keyValueAtomType[];
     auth: any;
     body: any;
   };

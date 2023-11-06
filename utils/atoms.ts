@@ -36,7 +36,7 @@ export const currentLeafsAtom = atom(data);
 export const APIRequestDataMapAtom = atom<APIRequestDataMapType>({
   "tab-simple-tree-id-initial": {
     method: "GET",
-    url: `https://jsonplaceholder.typicode.com/users/${Math.round(
+    url: `https://jsonplaceholder.typicode.com/users/${Math.ceil(
       Math.random() * 10,
     )}`,
     request: {

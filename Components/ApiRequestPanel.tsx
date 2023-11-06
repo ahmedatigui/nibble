@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useAtom } from "jotai";
+import { produce } from "immer";
 
 // Utils
 import createApiRequestFunction from "@/utils/restApi";
@@ -59,16 +60,27 @@ export default function ApiRequestPanel({ tab }: { tab: string }) {
   );
 
   async function handleSubmit() {
-    const readyParams = configParams
-      .filter((list) => list.checked && list.key.length && list.value.length)
-      .map((list) => new URLSearchParams({ [list.key]: list.value }));
+    const readyParams = APIRequestDataMap[tab].request.params
+      .filter(
+        (list: keyValueAtomType) =>
+          list.checked && list.key.length && list.value.length,
+      )
+      .reduce(
+        (params: keyValueAtomType[], list: keyValueAtomType) => ({
+          ...params,
+          [list.key]: list.value,
+        }),
+        [],
+      );
 
     let readyHeaders: ReadyHeadersType = {};
-    const filteredList = configHeaders.filter(
-      (list) => list.checked && list.key.length && list.value.length,
+    const filteredList = APIRequestDataMap[tab].request.headers.filter(
+      (list: keyValueAtomType) =>
+        list.checked && list.key.length && list.value.length,
     );
     filteredList.forEach(
-      (list) => (readyHeaders[`${list.key}`] = `${list.value}`),
+      (list: keyValueAtomType) =>
+        (readyHeaders[`${list.key}`] = `${list.value}`),
     );
 
     try {
@@ -108,8 +120,10 @@ export default function ApiRequestPanel({ tab }: { tab: string }) {
     ));
 
   useEffect(() => {
-    console.log(configParams);
-    setRenderedParamsKeyValueList(renderKeyValueLists("params", configParams));
+    console.log(APIRequestDataMap[`${tab}`].request.params);
+    setRenderedParamsKeyValueList(
+      renderKeyValueLists("params", APIRequestDataMap[`${tab}`].request.params),
+    );
     const readyList = configParams
       .filter((list) => list.checked && list.key.length && list.value.length)
       .map((list) => new URLSearchParams({ [list.key]: list.value }));
@@ -117,12 +131,15 @@ export default function ApiRequestPanel({ tab }: { tab: string }) {
     console.log("READYPARAM: ", readyList.length && readyList[0].toString());
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [configParams]);
+  }, [APIRequestDataMap]);
 
   useEffect(() => {
-    console.log(configHeaders);
+    console.log(APIRequestDataMap[`${tab}`].request.headers);
     setRenderedHeadersKeyValueList(
-      renderKeyValueLists("headers", configHeaders),
+      renderKeyValueLists(
+        "headers",
+        APIRequestDataMap[`${tab}`].request.headers,
+      ),
     );
     const readyList = configHeaders
       .filter((list) => list.checked && list.key.length && list.value.length)
@@ -141,9 +158,12 @@ export default function ApiRequestPanel({ tab }: { tab: string }) {
     console.log(readyHeaders);
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [configHeaders]);
+  }, [APIRequestDataMap]);
 
-  useEffect(() => console.log(httpRequestConfig), [httpRequestConfig]);
+  useEffect(
+    () => console.log("APIRequestDataMap: ", APIRequestDataMap),
+    [APIRequestDataMap],
+  );
 
   useEffect(() =>
     console.info(
@@ -163,15 +183,20 @@ export default function ApiRequestPanel({ tab }: { tab: string }) {
             <TextField.Input
               id="Url"
               defaultValue={`${
-                APIRequestDataMap[`${tab}`]?.url ??
+                APIRequestDataMap[`${tab}`].url ??
                 "https://jsonplaceholder.typicode.com/users/1"
               }`}
-              onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                 setHttpRequestConfig((prev) => ({
                   ...prev,
                   apiURL: e.target.value,
-                }))
-              }
+                }));
+                setAPIRequestDataMap(
+                  produce((draft) => {
+                    draft[`${tab}`].url = e.target.value;
+                  }),
+                );
+              }}
             />
           </TextField.Root>
           <Button onClick={() => handleSubmit()}>
@@ -203,14 +228,16 @@ export default function ApiRequestPanel({ tab }: { tab: string }) {
               <ReqParamsTabContent
                 renderedParamsKeyValueList={renderedParamsKeyValueList}
                 renderKeyValueLists={renderKeyValueLists}
-                configParams={configParams}
+                APIRequestDataMap={APIRequestDataMap}
+                tab={tab}
               />
             </Tabs.Content>
             <Tabs.Content value="tab2">
               <ReqHeadersTabContent
                 renderedHeadersKeyValueList={renderedHeadersKeyValueList}
                 renderKeyValueLists={renderKeyValueLists}
-                configHeaders={configHeaders}
+                APIRequestDataMap={APIRequestDataMap}
+                tab={tab}
               />
             </Tabs.Content>
             <Tabs.Content value="tab3">

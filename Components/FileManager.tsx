@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { NodeApi, NodeRendererProps, Tree, TreeApi } from "react-arborist";
 import { useAtom } from "jotai";
+import { v4 as uuidV4 } from "uuid";
 
 // Components
 import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
@@ -163,12 +164,12 @@ function Input({ node }: { node: NodeApi<FileManagerDataType> }) {
           ...prevState,
           [`${node.data.id}`]: {
             method: "GET",
-            url: `https://jsonplaceholder.typicode.com/users/${Math.round(
+            url: `https://jsonplaceholder.typicode.com/users/${Math.ceil(
               Math.random() * 10,
             )}`,
             request: {
-              params: null,
-              headers: null,
+              params: [{ id: uuidV4(), key: "", value: "", checked: true }],
+              headers: [{ id: uuidV4(), key: "", value: "", checked: true }],
               auth: null,
               body: null,
             },

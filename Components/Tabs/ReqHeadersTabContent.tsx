@@ -2,21 +2,26 @@
 import { Box } from "@radix-ui/themes";
 
 // Utils
-import { keyValueAtomType } from "@/utils/types";
+import { keyValueAtomType, APIRequestDataMapType } from "@/utils/types";
 
 export default function ReqHeadersTabContent({
   renderedHeadersKeyValueList,
   renderKeyValueLists,
-  configHeaders,
+  APIRequestDataMap,
+  tab,
 }: {
   renderedHeadersKeyValueList: JSX.Element[] | null;
   renderKeyValueLists: Function;
-  configHeaders: keyValueAtomType[];
+  APIRequestDataMap: APIRequestDataMapType;
+  tab: string;
 }) {
   return (
     <Box className="keyValueListContainer">
       {renderedHeadersKeyValueList ??
-        renderKeyValueLists("headers", configHeaders)}
+        renderKeyValueLists(
+          "headers",
+          APIRequestDataMap[`${tab}`].request.headers,
+        )}
     </Box>
   );
 }
