@@ -174,6 +174,7 @@ function Input({ node }: { node: NodeApi<FileManagerDataType> }) {
               body: null,
             },
             response: {
+              httpResponse: { status: "idle", data: null, error: null },
               typed: null,
               raw: null,
               headers: null,

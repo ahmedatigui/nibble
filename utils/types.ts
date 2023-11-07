@@ -42,6 +42,7 @@ export type APIRequestDataType = {
     body: any;
   };
   response: {
+    httpResponse: httpResponseConfigType;
     typed: any;
     raw: any;
     headers: any;

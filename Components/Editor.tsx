@@ -1,6 +1,7 @@
 import { useState, useCallback, useEffect } from "react";
 import { useAtom, useSetAtom } from "jotai";
 import { v4 as uuidV4 } from "uuid";
+import { produce } from "immer";
 
 import CodeMirror from "@uiw/react-codemirror";
 import { json } from "@codemirror/lang-json";
@@ -10,7 +11,12 @@ import { yaml } from "@nicktomlin/codemirror-lang-yaml-lite";
 import { solarizedLight, solarizedDark } from "@uiw/codemirror-theme-solarized";
 
 // Utils
-import { httpRequestConfigAtom, configHeadersAtom } from "@/utils/atoms";
+import {
+  httpRequestConfigAtom,
+  configHeadersAtom,
+  APIRequestDataMapAtom,
+} from "@/utils/atoms";
+import { keyValueAtomType } from "@/utils/types";
 
 const jsonValue = ``;
 
@@ -20,17 +26,22 @@ export default function Editor({
   isLight = true,
   setEditorValue,
   initValue = "// Hello, World!",
+  tab,
 }: {
   lang: string;
   isLight: boolean;
   isReadOnly: boolean;
   setEditorValue?: Function | undefined;
   initValue?: string | null | undefined;
+  tab: string;
 }) {
   const [httpRequestConfig, setHttpRequestConfig] = useAtom(
     httpRequestConfigAtom,
   );
   const [configHeaders, setConfigHeaders] = useAtom(configHeadersAtom);
+  const [APIRequestDataMap, setAPIRequestDataMap] = useAtom(
+    APIRequestDataMapAtom,
+  );
   const [value, setValue] = useState(jsonValue);
 
   useEffect((): void => {
@@ -49,7 +60,7 @@ export default function Editor({
         changeLangHeaders("application/json");
     }
 
-    console.log({ configHeaders });
+    console.log({ APIRequestDataMap });
   }, [lang]);
 
   const onChange = useCallback((val: string) => {
@@ -76,20 +87,40 @@ export default function Editor({
     }
   };
 
-  const changeLangHeaders = (value: string) => {
+  const changeLangHeaders = (vl: string) => {
     // configHeaders.forEach((item) => {
     //   if(item.key ==="Content-Type")item.value = value;
     // })
-    const ele = configHeaders.filter((item, i) => item.key !== "Content-Type");
-    setConfigHeaders([
-      ...ele,
-      {
-        id: uuidV4(),
-        key: "Content-Type",
-        value: value,
-        checked: true,
-      },
-    ]);
+    // const ele = configHeaders.filter((item, i) => item.key !== "Content-Type");
+    // setConfigHeaders([
+    //   ...ele,
+    //   {
+    //     id: uuidV4(),
+    //     key: "Content-Type",
+    //     value: value,
+    //     checked: true,
+    //   },
+    // ]);
+    setAPIRequestDataMap(
+      produce(APIRequestDataMap, (draft) => {
+        // const ele = draft[tab].request.headers.filter((item: keyValueAtomType) => item.key !== "Content-Type");
+        // draft[tab].request.headers = [
+        //   ...ele,
+        //   {
+        //     id: uuidV4(),
+        //     key: "Content-Type",
+        //     value: value,
+        //     checked: true,
+        //   },
+        // ];
+        draft[tab].request.headers.push({
+          id: uuidV4(),
+          key: "Content-Type",
+          value: vl,
+          checked: true,
+        });
+      }),
+    );
   };
 
   return (

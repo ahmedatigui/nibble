@@ -5,23 +5,29 @@ import Editor from "@/Components/Editor";
 import { Grid } from "@radix-ui/themes";
 
 // Utils
-import { httpResponseConfigAtom } from "@/utils/atoms";
+import { APIRequestDataMapAtom } from "@/utils/atoms";
 
-export default function ResBodyJSONTabContent() {
-  const [httpResponseConfig, setHttpResponseConfig] = useAtom(
-    httpResponseConfigAtom,
+export default function ResBodyJSONTabContent({ tab }: { tab: string }) {
+  const [APIRequestDataMap, setAPIRequestDataMap] = useAtom(
+    APIRequestDataMapAtom,
   );
   return (
     <Grid columns="1" rows="1">
-      {httpResponseConfig.status === "hasData" ? (
+      {APIRequestDataMap[tab].response.httpResponse.status === "hasData" ? (
         <Editor
           lang="json"
           isLight={true}
           isReadOnly={true}
-          initValue={`${JSON.stringify(httpResponseConfig.data, null, "\n")}`}
+          initValue={`${JSON.stringify(
+            APIRequestDataMap[tab].response.httpResponse.data,
+            null,
+            "\n",
+          )}`}
+          tab={tab}
         />
       ) : (
-        `${httpResponseConfig.error}` ?? `${httpResponseConfig.status}`
+        `${APIRequestDataMap[tab].response.httpResponse.error}` ??
+        `${APIRequestDataMap[tab].response.httpResponse.status}`
       )}
     </Grid>
   );

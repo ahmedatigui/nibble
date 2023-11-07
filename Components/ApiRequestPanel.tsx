@@ -50,9 +50,6 @@ export default function ApiRequestPanel({ tab }: { tab: string }) {
   const [httpRequestConfig, setHttpRequestConfig] = useAtom(
     httpRequestConfigAtom,
   );
-  const [httpResponseConfig, setHttpResponseConfig] = useAtom(
-    httpResponseConfigAtom,
-  );
 
   // New Data strcuture Atom
   const [APIRequestDataMap, setAPIRequestDataMap] = useAtom(
@@ -84,8 +81,12 @@ export default function ApiRequestPanel({ tab }: { tab: string }) {
     );
 
     try {
-      setHttpResponseConfig((prev) => ({ ...prev, status: "loading" }));
-      console.log(httpRequestConfig);
+      setAPIRequestDataMap(
+        produce((draft) => {
+          draft[tab].response.httpResponse.status = "loading";
+        }),
+      );
+      console.log(APIRequestDataMap);
       const response: any = await createApiRequestFunction({
         apiURL: APIRequestDataMap[tab].url,
         httpMethod: APIRequestDataMap[tab].method,
@@ -94,20 +95,23 @@ export default function ApiRequestPanel({ tab }: { tab: string }) {
       });
 
       const data: any = response.data;
-      setHttpResponseConfig((prev) => ({
-        ...prev,
-        status: "hasData",
-        data: data,
-      }));
-      console.log(httpResponseConfig);
+
+      setAPIRequestDataMap(
+        produce((draft) => {
+          draft[tab].response.httpResponse.status = "hasData";
+          draft[tab].response.httpResponse.data = data;
+        }),
+      );
+      console.log(APIRequestDataMap);
       console.log(response, data);
     } catch (error) {
-      setHttpResponseConfig((prev) => ({
-        ...prev,
-        status: "hasError",
-        error: error,
-      }));
-      console.log(httpResponseConfig);
+      setAPIRequestDataMap(
+        produce((draft) => {
+          draft[tab].response.httpResponse.status = "hasError";
+          draft[tab].response.httpResponse.error = error;
+        }),
+      );
+      console.log(APIRequestDataMap);
     }
   }
 
@@ -244,7 +248,7 @@ export default function ApiRequestPanel({ tab }: { tab: string }) {
               <ReqAuthTabContent />
             </Tabs.Content>
             <Tabs.Content value="tab4">
-              <ReqBodyTabContent />
+              <ReqBodyTabContent tab={tab} />
             </Tabs.Content>
           </Tabs.Root>
         </Box>
@@ -257,10 +261,10 @@ export default function ApiRequestPanel({ tab }: { tab: string }) {
               <Tabs.Trigger value="tab4">Stats</Tabs.Trigger>
             </Tabs.List>
             <Tabs.Content value="tab1">
-              <ResBodyJSONTabContent />
+              <ResBodyJSONTabContent tab={tab} />
             </Tabs.Content>
             <Tabs.Content value="tab2">
-              <ResBodyRawTabContent />
+              <ResBodyRawTabContent tab={tab} />
             </Tabs.Content>
             <Tabs.Content value="tab3">
               <ResHeadersTabContent />

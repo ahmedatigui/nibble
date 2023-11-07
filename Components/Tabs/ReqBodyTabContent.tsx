@@ -8,7 +8,7 @@ import { Select, Grid } from "@radix-ui/themes";
 // Utils
 import { httpRequestConfigAtom, configHeadersAtom } from "@/utils/atoms";
 
-export default function ReqBodyTabContent() {
+export default function ReqBodyTabContent({ tab }: { tab: string }) {
   const [isLight, setLight] = useState(true);
   const [lang, setLang] = useState("json");
   const [editorValue, setEditorValue] = useState(null);
@@ -17,6 +17,7 @@ export default function ReqBodyTabContent() {
   const options = HTTP_verbs.map((verb) => {
     return { label: verb, value: verb };
   });
+
   return (
     <>
       {/* <button onClick={() => setLight(!isLight)}>Toggle theme</button> */}
@@ -44,6 +45,7 @@ export default function ReqBodyTabContent() {
           isReadOnly={false}
           isLight={isLight}
           setEditorValue={setEditorValue}
+          tab={tab}
         />
       </Grid>
     </>
