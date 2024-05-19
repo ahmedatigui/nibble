@@ -1,29 +1,55 @@
-import { useState } from "react";
 import { useAtom } from "jotai";
+import { produce } from "immer";
+import { v4 as uuidV4 } from "uuid";
 
 // Components
-import Editor from "../Editor";
-import { Select, Grid } from "@radix-ui/themes";
+import { Editor } from "@/Components/RequestEditor";
+import { Select, Box } from "@radix-ui/themes";
 
 // Utils
-import { httpRequestConfigAtom, configHeadersAtom } from "@/utils/atoms";
+import { APIRequestDataMapAtom } from "@/utils/atoms";
+import { keyValueAtomType } from "@/utils/types";
+import { getContentType, getLanguageFromMimeType } from "@/utils/helpers";
 
 export default function ReqBodyTabContent({ tab }: { tab: string }) {
-  const [isLight, setLight] = useState(true);
-  const [lang, setLang] = useState("json");
-  const [editorValue, setEditorValue] = useState(null);
+  const [APIRequestDataMap, setAPIRequestDataMap] = useAtom(
+    APIRequestDataMapAtom,
+  );
 
   const HTTP_verbs = ["json", "yaml", "html", "xml", "text"];
   const options = HTTP_verbs.map((verb) => {
     return { label: verb, value: verb };
   });
 
+  const handleOnValueChange = (lang: string) => {
+    setAPIRequestDataMap(
+      produce(APIRequestDataMap, (draftState) => {
+        const ind = draftState[tab].request.headers.findIndex(
+          (item: keyValueAtomType, i: number) => item.key === "Content-Type",
+        );
+        console.info("IND: ", ind);
+
+        if (ind >= 0) {
+          draftState[tab].request.headers[ind].value = getContentType(lang);
+        } else {
+          draftState[tab].request.headers.push({
+            id: uuidV4(),
+            key: "Content-Type",
+            value: getContentType(lang),
+            checked: true,
+          });
+        }
+      }),
+    );
+  };
+
   return (
-    <>
-      {/* <button onClick={() => setLight(!isLight)}>Toggle theme</button> */}
+    <Box className="playground-container">
       <Select.Root
-        defaultValue="json"
-        onValueChange={(value: string) => setLang(value)}
+        defaultValue={getLanguageFromMimeType(
+          APIRequestDataMap[tab].request.headers[0].value,
+        )}
+        onValueChange={(value: string) => handleOnValueChange(value)}
       >
         <Select.Trigger className="SelectTrigger toggle" aria-label="Food" />
 
@@ -39,15 +65,9 @@ export default function ReqBodyTabContent({ tab }: { tab: string }) {
           ))}
         </Select.Content>
       </Select.Root>
-      <Grid columns="1" rows="1" className="editors w-full">
-        <Editor
-          lang={lang}
-          isReadOnly={false}
-          isLight={isLight}
-          setEditorValue={setEditorValue}
-          tab={tab}
-        />
-      </Grid>
-    </>
+      <Box className="playground-container">
+        <Editor tab={tab} />
+      </Box>
+    </Box>
   );
 }

@@ -1,7 +1,7 @@
 import { useAtom } from "jotai";
 
 // Components
-import Editor from "@/Components/Editor";
+import { Editor } from "@/Components/ResponseEditor";
 import { Grid } from "@radix-ui/themes";
 
 // Utils
@@ -14,17 +14,7 @@ export default function ResBodyRawTabContent({ tab }: { tab: string }) {
   return (
     <Grid columns="1" rows="1">
       {APIRequestDataMap[tab].response.httpResponse.status === "hasData" ? (
-        <Editor
-          lang="text"
-          isLight={true}
-          isReadOnly={true}
-          initValue={`${JSON.stringify(
-            APIRequestDataMap[tab].response.httpResponse.data,
-            null,
-            "\n",
-          )}`}
-          tab={tab}
-        />
+        <Editor tab={tab} />
       ) : (
         `${APIRequestDataMap[tab].response.httpResponse.error}` ??
         `${APIRequestDataMap[tab].response.httpResponse.status}`

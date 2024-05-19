@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import { NodeApi, NodeRendererProps, Tree, TreeApi } from "react-arborist";
 import { useAtom } from "jotai";
 import { v4 as uuidV4 } from "uuid";
+import { produce } from "immer";
 
 // Components
 import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
@@ -19,14 +20,16 @@ import {
   APIRequestDataMapAtom,
   currentActiveLeafAtom,
   currentLeafsAtom,
+  FileManagerDataAtom,
 } from "../utils/atoms";
 
 export default function FileManager() {
-  const [term, setTerm] = useState<string | undefined>();
   const [currentActiveLeaf, setCurrentActiveLeaf] = useAtom(
     currentActiveLeafAtom,
   );
   const [currentLeafs, setCurrentLeafs] = useAtom(currentLeafsAtom);
+  const [FileManagerData, setFileManagerData] = useAtom(FileManagerDataAtom);
+  const [term, setTerm] = useState<string | undefined>();
   const treeRef = useRef<TreeApi<FileManagerDataType> | null>();
 
   useEffect(
@@ -34,14 +37,19 @@ export default function FileManager() {
     [currentActiveLeaf],
   );
 
-  const handleActivate = (node: NodeApi<FileManagerDataType>) => {
-    console.log("ONACTIVATE: ", node.data.name);
-    const doesNameExist = data.some((item) => item.name === node.data.name);
+  useEffect(
+    () => console.log("HH: ", data),
+    [FileManagerData, currentLeafs, data],
+  );
 
-    if (!doesNameExist) {
-      setCurrentActiveLeaf(`tab-${node.data.id}`);
-      console.log("ACTIVE: ", currentActiveLeaf);
-    }
+  const handleActivate = (node: NodeApi<FileManagerDataType>) => {
+    console.log("onActivate: ", node.data.name);
+    // const doesNameExist = data.some((item) => item.name === node.data.name);
+
+    // if (!doesNameExist) {
+    //   setCurrentActiveLeaf(`tab-${node.data.id}`);
+    //   console.log("ACTIVE: ", currentActiveLeaf);
+    // }
   };
 
   const handleFocus = (node: NodeApi<FileManagerDataType>) => {
@@ -99,10 +107,27 @@ function Node({
   dragHandle,
 }: NodeRendererProps<FileManagerDataType>) {
   /* This node instance can do many things. See the API reference. */
+  const [currentActiveLeaf, setCurrentActiveLeaf] = useAtom(
+    currentActiveLeafAtom,
+  );
+  const [currentLeafs, setCurrentLeafs] = useAtom(currentLeafsAtom);
+  // const [APIRequestDataMap, setAPIRequestDataMap] = useAtom(APIRequestDataMapAtom);
+
+  useEffect(() => console.log("HH: ", tree, node));
+
+  // useEffect(() => {
+  //   for(let key in APIRequestDataMap){
+  //     // console.info(key, APIRequestDataMap[key]);
+  //     data.push({id: APIRequestDataMap[key].tab.id, name: APIRequestDataMap[key].tab.name})
+  //     node.submit(APIRequestDataMap[key].tab.name);
+  //   }
+  // }, [])
+
   const handleClicked = () => {
     if (node.isInternal) node.toggle();
     else if (node.isSelected && node.isLeaf) {
-      node.activate();
+      setCurrentActiveLeaf(`${node.data.id}`);
+      // node.activate();
       console.info("NODE ID: ", node.data.id);
     }
   };
@@ -114,7 +139,7 @@ function Node({
           <span className="node-text">
             <PrefixIcon node={node} />
             {node.isEditing ? (
-              <Input node={node} />
+              <Input node={node} tree={tree} />
             ) : (
               <>
                 <span>{node.data.name}</span>
@@ -126,7 +151,7 @@ function Node({
           <span className="node-text">
             <PrefixIcon node={node} />
             {node.isEditing ? (
-              <Input node={node} />
+              <Input node={node} tree={tree} />
             ) : (
               <>
                 <span>{node.data.name}</span>
@@ -140,11 +165,21 @@ function Node({
   );
 }
 
-function Input({ node }: { node: NodeApi<FileManagerDataType> }) {
+function Input({
+  node,
+  tree,
+}: {
+  node: NodeApi<FileManagerDataType>;
+  tree: TreeApi<FileManagerDataType> | null | undefined;
+}) {
   const [currentLeafs, setCurrentLeafs] = useAtom(currentLeafsAtom);
   const [APIRequestDataMap, setAPIRequestDataMap] = useAtom(
     APIRequestDataMapAtom,
   );
+  const [currentActiveLeaf, setCurrentActiveLeaf] = useAtom(
+    currentActiveLeafAtom,
+  );
+  const [FileManagerData, setFileManagerData] = useAtom(FileManagerDataAtom);
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     const isNameValueEmpty = Boolean(e.currentTarget.value.length === 0);
@@ -155,37 +190,59 @@ function Input({ node }: { node: NodeApi<FileManagerDataType> }) {
     console.log("doesNameExist: ", doesNameExist);
     if (e.key === "Escape") node.reset();
     if (e.key === "Enter") {
+      const existingLeafIndex = currentLeafs.findIndex(
+        (leaf) => leaf.id === node.data.id,
+      );
       if (!node.isInternal && isNameValueEmpty === false) {
-        setCurrentLeafs((current) => [
-          ...current,
-          { id: node.data.id, name: e.currentTarget.value },
-        ]);
-        setAPIRequestDataMap((prevState) => ({
-          ...prevState,
-          [`${node.data.id}`]: {
-            method: "GET",
-            url: `https://jsonplaceholder.typicode.com/users/${Math.ceil(
-              Math.random() * 10,
-            )}`,
-            request: {
-              params: [{ id: uuidV4(), key: "", value: "", checked: true }],
-              headers: [{ id: uuidV4(), key: "", value: "", checked: true }],
-              auth: null,
-              body: null,
+        if (existingLeafIndex !== -1) {
+          setCurrentLeafs((current) => [
+            ...current.slice(0, existingLeafIndex),
+            { id: node.data.id, name: e.currentTarget.value },
+            ...current.slice(existingLeafIndex + 1),
+          ]);
+          setAPIRequestDataMap((currentAPIRequestDataMap) =>
+            produce(currentAPIRequestDataMap, (draftAPIRequestDataMap) => {
+              draftAPIRequestDataMap[node.data.id].tab.name =
+                e.currentTarget.value;
+            }),
+          );
+        } else {
+          setCurrentLeafs((current) => [
+            ...current,
+            { id: node.data.id, name: e.currentTarget.value },
+          ]);
+          /*setAPIRequestDataMap((prevState) => ({
+            ...prevState,
+            [`${node.data.id}`]: {
+              method: "GET",
+              url: `https://jsonplaceholder.typicode.com/users/${Math.ceil(
+                Math.random() * 10,
+              )}`,
+              request: {
+                params: [{ id: uuidV4(), key: "", value: "", checked: true }],
+                headers: [{ id: uuidV4(), key: "", value: "", checked: true }],
+                auth: null,
+                body: null,
+              },
+              response: {
+                httpResponse: { status: "idle", data: null, error: null },
+                typed: null,
+                raw: null,
+                headers: null,
+                stats: null,
+              },
+              tab: {
+                name: `${e.currentTarget.value}`,
+                id: `${node.data.id}`,
+              },
             },
-            response: {
-              httpResponse: { status: "idle", data: null, error: null },
-              typed: null,
-              raw: null,
-              headers: null,
-              stats: null,
-            },
-          },
-        }));
+          }));*/
+        }
         node.submit(e.currentTarget.value);
+        setCurrentActiveLeaf(`${node.data.id}`);
       } else if (node.isInternal && isNameValueEmpty === false) {
         node.submit(e.currentTarget.value);
-      }
+      } else tree?.delete(node.id);
       console.info(node.data.id, node.data.name, node.isInternal);
     }
   };
@@ -253,6 +310,16 @@ const DropdownMenuFile = ({
   node: NodeApi<FileManagerDataType>;
   tree: TreeApi<FileManagerDataType>;
 }) => {
+  const [APIRequestDataMap, setAPIRequestDataMap] = useAtom(
+    APIRequestDataMapAtom,
+  );
+  function handleDeleteRequest(id: string) {
+    setAPIRequestDataMap(
+      produce((draft) => {
+        delete draft[id];
+      }),
+    );
+  }
   return (
     <DropdownMenu.Root>
       <DropdownMenu.Trigger asChild>
@@ -271,7 +338,10 @@ const DropdownMenuFile = ({
           </DropdownMenu.Item>
           <DropdownMenu.Item
             className="DropdownMenuItem"
-            onSelect={() => tree.delete(node.id)}
+            onSelect={() => {
+              tree.delete(node.id);
+              handleDeleteRequest(node.id);
+            }}
           >
             Delete Request
           </DropdownMenu.Item>

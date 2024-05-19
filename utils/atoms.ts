@@ -6,8 +6,9 @@ import {
   httpResponseConfigType,
   keyValueAtomType,
   APIRequestDataMapType,
+  FileManagerDataType,
 } from "./types";
-import { data } from "./data";
+// import { data } from "./data";
 
 export const httpRequestConfigAtom = atom<httpRequestConfigType>({
   apiURL: "https://jsonplaceholder.typicode.com/users/1",
@@ -16,7 +17,7 @@ export const httpRequestConfigAtom = atom<httpRequestConfigType>({
 });
 
 export const httpResponseConfigAtom = atom<httpResponseConfigType>({
-  status: "idle",
+  status: "idle" || "loading" || "hasData" || "hasError",
   data: null,
   error: null,
 });
@@ -31,22 +32,37 @@ export const configHeadersAtom = atom<keyValueAtomType[]>([
 
 export const environmentVariablesAtom = atom({});
 
+export const FileManagerDataAtom = atomWithStorage<FileManagerDataType[]>(
+  "FileManagerData",
+  [{ id: "tab-simple-tree-id-initial", name: "Untitled" }],
+);
+
 export const currentActiveLeafAtom = atom("tab-simple-tree-id-initial");
-export const currentLeafsAtom = atom(data);
+export const currentLeafsAtom = atom([
+  { id: "tab-simple-tree-id-initial", name: "Untitled" },
+]);
 
 export const APIRequestDataMapAtom = atomWithStorage<APIRequestDataMapType>(
   "APIRequestDataMap",
   {
     "tab-simple-tree-id-initial": {
       method: "GET",
-      url: `https://jsonplaceholder.typicode.com/users/${Math.ceil(
-        Math.random() * 10,
-      )}`,
+      url: `http://httpbin.org/get`,
+      timing: 0,
       request: {
         params: [{ id: uuidV4(), key: "", value: "", checked: true }],
-        headers: [{ id: uuidV4(), key: "", value: "", checked: true }],
+        headers: [
+          {
+            id: uuidV4(),
+            key: "Content-Type",
+            value: "application/json",
+            checked: true,
+          },
+          { id: uuidV4(), key: "Accept", value: "*/*", checked: true },
+          { id: uuidV4(), key: "", value: "", checked: true },
+        ],
         auth: null,
-        body: null,
+        body: "// Hello, World!",
       },
       response: {
         httpResponse: { status: "idle", data: null, error: null },
@@ -54,6 +70,15 @@ export const APIRequestDataMapAtom = atomWithStorage<APIRequestDataMapType>(
         raw: null,
         headers: null,
         stats: null,
+        statusCode: null,
+        statusText: null,
+      },
+      tab: {
+        name: "Untitled",
+        id: "tab-simple-tree-id-initial",
+      },
+      style: {
+        theme: "light",
       },
     },
   },

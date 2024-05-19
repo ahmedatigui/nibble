@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useLayoutEffect } from "react";
 import { useAtom } from "jotai";
 
 // Components
@@ -15,28 +15,58 @@ export default function FileTabs() {
     currentActiveLeafAtom,
   );
 
-  const [currentFocusedLeaf, setCurrentFocusedLeaf] = useAtom(currentLeafsAtom);
+  const [currentLeafs, setCurrentLeafs] = useAtom(currentLeafsAtom);
 
   const [tab, setTab] = useState(currentActiveLeaf);
-  const [tabList, setTabList] = useState<React.JSX.Element[]>();
+  const [tabList, setTabList] = useState<React.JSX.Element>();
 
-  const renderFocusedTabsTrigger = () =>
-    currentFocusedLeaf.map((leaf: FileManagerDataType) => (
-      <Tabs.Trigger
-        className="TabsTrigger"
-        value={leaf.id}
-        key={leaf.id}
-        onClick={() => {
-          // setActiveLeaf(`tab-${leaf.id}`);
-          setCurrentActiveLeaf(leaf.id);
+  const renderFocusedTabsTrigger = () => {
+    //console.log("RENDERFTL: ", currentActiveLeaf);
+    return (
+      <>
+        <ApiRequestPanel tab={tab} />
+        {/*<Tabs.Root
+        className="TabsRoot"
+        defaultValue={"tab-simple-tree-id-initial"}
+        onValueChange={(value) => {
+          setTab(value);
+          console.info("TABTRIGGER: ", value);
         }}
       >
-        {leaf.name}
-      </Tabs.Trigger>
-    ));
+        <Tabs.List className="TabsList" aria-label="Manage your account">
+          {currentLeafs.map((leaf: FileManagerDataType) => (
+            <Tabs.Trigger
+              className="TabsTrigger"
+              value={leaf.id}
+              key={leaf.id}
+              onClick={() => {
+                // setActiveLeaf(`tab-${leaf.id}`);
+                setCurrentActiveLeaf(leaf.id);
+              }}
+            >
+              {leaf.name}
+            </Tabs.Trigger>
+          ))}
+        </Tabs.List>
+        <Tabs.Content
+          className="TabsContent"
+          key={currentActiveLeaf}
+          value={currentActiveLeaf}
+        >
+          <ApiRequestPanel tab={tab} />
+            </Tabs.Content>*/}
+        {/* {currentLeafs.map((leaf: FileManagerDataType) => (
+          <Tabs.Content className="TabsContent" key={leaf.id} value={leaf.id}>
+            <ApiRequestPanel tab={tab} />
+          </Tabs.Content>
+        ))} */}
+        {/*</Tabs.Root>*/}
+      </>
+    );
+  };
 
   const renderFocusedTabsContent = () =>
-    currentFocusedLeaf.map((leaf) => (
+    currentLeafs.map((leaf) => (
       <Tabs.Content className="TabsContent" value={leaf.id} key={leaf.id}>
         Content: {leaf.name}
       </Tabs.Content>
@@ -45,28 +75,14 @@ export default function FileTabs() {
   useEffect(() => {
     const trigger = renderFocusedTabsTrigger();
     setTabList(trigger);
-    console.log("TABS_FOCUSED: ", currentFocusedLeaf);
-  }, [currentFocusedLeaf]);
+    console.log("TABS_FOCUSED: ", currentLeafs);
+  }, [currentLeafs, currentActiveLeaf]);
 
   // useEffect(() => setActiveLeaf(currentActiveLeaf), [currentActiveLeaf]);
 
   return (
     <Grid rows="auto auto 1fr" gap="4">
-      <Tabs.Root
-        className="TabsRoot"
-        value={currentActiveLeaf}
-        onValueChange={(value) => {
-          setTab(value);
-          console.info("TABTRIGGER: ", value);
-        }}
-      >
-        <Tabs.List className="TabsList" aria-label="Manage your account">
-          {tabList}
-        </Tabs.List>
-        <Tabs.Content className="TabsContent" value={tab}>
-          <ApiRequestPanel tab={tab} />
-        </Tabs.Content>
-      </Tabs.Root>
+      {tabList}
     </Grid>
   );
 }

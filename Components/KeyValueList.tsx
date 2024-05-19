@@ -22,35 +22,31 @@ type SetListType = (newList: keyValueAtomType[]) => void;
 function KeyValueList({
   atomName,
   order,
-  tab,
+  tab = "tab-simple-tree-id-initial",
+  keyValue,
 }: {
   atomName: string;
   order: number;
-  tab: string;
+  tab?: string;
+  keyValue: keyValueAtomType;
 }) {
-  const [fresh, setFresh] = useState(true);
+  const [fresh, setFresh] = useState(
+    keyValue.key || keyValue.value ? false : true,
+  );
 
-  // const keyValueListAtom =
-  //   atomName === "params" ? configParamsAtom : configHeadersAtom;
-
-  // const [list, setList] = useAtom(keyValueListAtom);
   const [APIRequestDataMap, setAPIRequestDataMap] = useAtom(
     APIRequestDataMapAtom,
   );
 
+  const defaultKey = keyValue.key;
+  const defaultValue = keyValue.value;
+  const defaultChecked =
+    keyValue.key || keyValue.value ? keyValue.checked : !!fresh;
+
   const updateKey = (index: number, key: string) => {
-    // setList(
-    //   list.map((item: keyValueAtomType, i: number) =>
-    //     i === index ? { ...item, key } : item,
-    //   ),
-    // );
     if (atomName === "params") {
       setAPIRequestDataMap((prevState) =>
         produce(prevState, (draftState: Draft<APIRequestDataMapType>) => {
-          // draftState[tab].request.params = list.map(
-          //   (item: keyValueAtomType, i: number) =>
-          //     i === index ? { ...item, key } : item,
-          // );
           draftState[tab].request.params[index].key = key;
         }),
       );
@@ -66,11 +62,6 @@ function KeyValueList({
   };
 
   const updateValue = (index: number, value: string) => {
-    // setList(
-    //   list.map((item: keyValueAtomType, i: number) =>
-    //     i === index ? { ...item, value } : item,
-    //   ),
-    // );
     if (atomName === "params") {
       setAPIRequestDataMap((prevState) =>
         produce(prevState, (draftState: Draft<APIRequestDataMapType>) => {
@@ -90,12 +81,10 @@ function KeyValueList({
     }
   };
 
-  const updateChecked = (index: number, checked: string | boolean) => {
-    // setList(
-    //   list.map((item: keyValueAtomType, i: number) =>
-    //     i === index ? { ...item, checked } : item,
-    //   ),
-    // );
+  const updateChecked = (
+    index: number,
+    checked: keyValueAtomType["checked"],
+  ) => {
     if (atomName === "params") {
       setAPIRequestDataMap((prevState) =>
         produce(prevState, (draftState: Draft<APIRequestDataMapType>) => {
@@ -116,7 +105,6 @@ function KeyValueList({
   };
 
   const addItem = () => {
-    // setList([...list, { id: uuidV4(), key: "", value: "", checked: true }]);
     if (atomName === "params") {
       setAPIRequestDataMap((prevState) =>
         produce(prevState, (draftState: Draft<APIRequestDataMapType>) => {
@@ -143,10 +131,6 @@ function KeyValueList({
   };
 
   const removeItem = (index: number) => {
-    // console.log("Will remove: ", index);
-    // const ele = list.filter((_, i) => i !== index);
-    // console.log("New list: ", ele);
-    // setList(ele);
     if (atomName === "params") {
       setAPIRequestDataMap((prevState) =>
         produce(prevState, (draftState: Draft<APIRequestDataMapType>) => {
@@ -179,7 +163,8 @@ function KeyValueList({
           width="100%"
           size="3"
           id="key"
-          placeholder="Key"
+          defaultValue={defaultKey || undefined}
+          placeholder={defaultKey ? "" : "Key"}
           onChange={(e) => {
             updateKey(order, e.target.value);
             if (fresh) {
@@ -195,7 +180,8 @@ function KeyValueList({
           size="3"
           id="value"
           className="keyValueListInput value"
-          placeholder="Value"
+          defaultValue={defaultValue || undefined}
+          placeholder={defaultValue ? "" : "Value"}
           onChange={(e) => {
             updateValue(order, e.target.value);
             if (fresh) {
@@ -209,7 +195,7 @@ function KeyValueList({
         <Checkbox
           size="3"
           disabled={fresh}
-          defaultChecked={!!fresh}
+          defaultChecked={defaultChecked}
           onCheckedChange={(state) => updateChecked(order, state)}
         />
       </Box>

@@ -1,8 +1,0 @@
-@use "../abstracts/" as *;
-
-body {
-  block-size: 100vh;
-
-  display: grid;
-  grid-template-rows: auto 1fr;
-}

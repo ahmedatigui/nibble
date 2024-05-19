@@ -1,17 +1,30 @@
 import { useAtom } from "jotai";
-import { httpRequestConfigAtom } from "@/utils/atoms";
+import { produce } from "immer";
 
+// Components
 import { Select } from "@radix-ui/themes";
 
-const SelectDemo = () => {
+// Utils
+import { httpRequestConfigAtom, APIRequestDataMapAtom } from "@/utils/atoms";
+
+const SelectDemo = ({ tab }: { tab: string }) => {
   const [httpRequestConfig, setHttpRequestConfig] = useAtom(
     httpRequestConfigAtom,
   );
+  const [APIRequestDataMap, setAPIRequestDataMap] = useAtom(
+    APIRequestDataMapAtom,
+  );
+
   return (
     <Select.Root
+      size="3"
       defaultValue="GET"
       onValueChange={(value: string) =>
-        setHttpRequestConfig((prev) => ({ ...prev, httpMethod: value }))
+        setAPIRequestDataMap(
+          produce((draft) => {
+            draft[tab].method = value;
+          }),
+        )
       }
     >
       <Select.Trigger className="SelectTrigger toggle" aria-label="Food" />

@@ -15,11 +15,13 @@ export interface httpResponseConfigType {
   error: unknown | null | undefined;
 }
 
+export type CheckedState = boolean | "indeterminate";
+
 export interface keyValueAtomType {
   id: string;
   key: string;
   value: string;
-  checked: string | boolean;
+  checked: CheckedState | undefined;
 }
 
 export interface ReadyHeadersType {
@@ -35,6 +37,7 @@ export type FileManagerDataType = {
 export type APIRequestDataType = {
   method: string;
   url: string;
+  timing: number;
   request: {
     params: keyValueAtomType[];
     headers: keyValueAtomType[];
@@ -47,6 +50,15 @@ export type APIRequestDataType = {
     raw: any;
     headers: any;
     stats: any;
+    statusCode: any;
+    statusText: any;
+  };
+  tab: {
+    name: string;
+    id: string;
+  };
+  style: {
+    theme: "light" | "dark";
   };
 };
 

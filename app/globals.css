@@ -1,3 +1,51 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+html,
+body,
+#root,
+.playground-container {
+  padding: 0;
+  margin: 0;
+  height: 100vh;
+  background-color: #efefef;
+}
+
+.playground-container {
+  display: flex;
+  flex-direction: column;
+  max-height: 100vh;
+}
+
+.playground-panel {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.cm-outer-container {
+  flex: 1;
+  width: 100%;
+}
+
+.cm-editor {
+  flex: 1;
+  height: 100%;
+  position: relative; /* <-- .cm-scroller absolute positioning depends on this*/
+}
+
+.cm-scroller {
+  position: absolute !important;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  overflow-y: auto;
+}
+
+.cm-content {
+  word-wrap: break-word;
+  white-space: pre-wrap;
+  word-break: normal;
+}

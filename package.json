@@ -1,7 +1,7 @@
 {
   "name": "nibble",
   "version": "0.1.0",
-  "description": "🚀 API Testing Web App",
+  "description": "Basic API Testing Web App",
   "license": "GPL-3.0",
   "private": true,
   "scripts": {
