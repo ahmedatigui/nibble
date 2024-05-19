@@ -46,8 +46,10 @@ export function Editor({ tab }: { tab: string }) {
   }, [APIRequestDataMap[tab].response.headers]);
 
   useEffect((): void => {
-    const data = APIRequestDataMap[tab].response.httpResponse.data ?? APIRequestDataMap[tab].response.statusText;
-    setValue(JSON.stringify(data, null, '\n'));
+    const data =
+      APIRequestDataMap[tab].response.httpResponse.data ??
+      APIRequestDataMap[tab].response.statusText;
+    setValue(JSON.stringify(data, null, "\n"));
   }, [APIRequestDataMap[tab].response.httpResponse.data]);
 
   const onChange = useCallback((val: string) => {
@@ -73,22 +75,17 @@ export function Editor({ tab }: { tab: string }) {
 
   return (
     <>
-      
-        <div className="playground-panel">
-          <CodeMirror
-            className="cm-outer-container"
-            value={value ?? "Nothing yet."}
-            readOnly={true}
-            //height="100%"
-            theme={isLight ? solarizedLight : solarizedDark}
-            extensions={[getMode(lang)]}
-            onChange={onChange}
-          />
-        </div>
-      
-       
-       
-      }
+      <div className="playground-panel">
+        <CodeMirror
+          className="cm-outer-container"
+          value={value ?? "Nothing yet."}
+          readOnly={true}
+          //height="100%"
+          theme={isLight ? solarizedLight : solarizedDark}
+          extensions={[getMode(lang)]}
+          onChange={onChange}
+        />
+      </div>
     </>
   );
 }
