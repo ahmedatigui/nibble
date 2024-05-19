@@ -2,7 +2,7 @@
 import { Box } from "@radix-ui/themes";
 
 // Utils
-import { keyValueAtomType, APIRequestDataMapType } from "@/utils/types";
+import { APIRequestDataMapType } from "@/utils/types";
 
 export default function ReqHeadersTabContent({
   renderKeyValueLists,

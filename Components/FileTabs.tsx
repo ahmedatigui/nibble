@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useLayoutEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { useAtom } from "jotai";
 
 // Components
@@ -7,8 +7,6 @@ import { Grid, Tabs } from "@radix-ui/themes";
 
 // Utils
 import { currentActiveLeafAtom, currentLeafsAtom } from "../utils/atoms";
-import { data } from "../utils/data";
-import { FileManagerDataType } from "../utils/types";
 
 export default function FileTabs() {
   const [currentActiveLeaf, setCurrentActiveLeaf] = useAtom(

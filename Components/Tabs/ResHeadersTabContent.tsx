@@ -2,8 +2,7 @@
 import { Box, Table } from "@radix-ui/themes";
 
 // Utils
-import { keyValueAtomType, APIRequestDataMapType } from "@/utils/types";
-import { flattenObject } from "@/utils/helpers";
+import { APIRequestDataMapType } from "@/utils/types";
 
 export default function ResHeadersTabContent({
   renderKeyValueLists,
