@@ -1,5 +1,6 @@
-// import './globals.css'
-import "../sass/main.scss";
+import "./globals.css";
+//import "../sass/main.scss";
+import "@radix-ui/themes/styles.css";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 

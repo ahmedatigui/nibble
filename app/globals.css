@@ -2,26 +2,50 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  --foreground-rgb: 0, 0, 0;
-  --background-start-rgb: 214, 219, 220;
-  --background-end-rgb: 255, 255, 255;
+html,
+body,
+#root,
+.playground-container {
+  padding: 0;
+  margin: 0;
+  height: 100vh;
+  background-color: #efefef;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --foreground-rgb: 255, 255, 255;
-    --background-start-rgb: 0, 0, 0;
-    --background-end-rgb: 0, 0, 0;
-  }
+.playground-container {
+  display: flex;
+  flex-direction: column;
+  max-height: 100vh;
 }
 
-body {
-  color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-      to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));
+.playground-panel {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.cm-outer-container {
+  flex: 1;
+  width: 100%;
+}
+
+.cm-editor {
+  flex: 1;
+  height: 100%;
+  position: relative; /* <-- .cm-scroller absolute positioning depends on this*/
+}
+
+.cm-scroller {
+  position: absolute !important;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  overflow-y: auto;
+}
+
+.cm-content {
+  word-wrap: break-word;
+  white-space: pre-wrap;
+  word-break: normal;
 }
