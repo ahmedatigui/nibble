@@ -30,13 +30,9 @@ export default function Home() {
   };
   return (
     <Theme appearance={theme ?? "light"}>
-      <Grid
-        rows="auto 1fr"
-        gap="4"
-        className="max-h-screen h-screen overflow-hidden"
-      >
+      <Grid rows="10vh 87vh" gap="4" className="main-container">
         <Flex p="4" justify="between">
-          <Link href="/about" title="Nibble logo">
+          <Link href="/" title="Nibble logo">
             Nibble
           </Link>
           <Button
@@ -52,7 +48,12 @@ export default function Home() {
           {/* <Box>
               <FileManager />
               </Box> */}
-          <Grid p="4" rows="auto 1fr" gap="4">
+          <Grid
+            p="4"
+            rows="auto 1fr"
+            gap="4"
+            className="config-panels-container"
+          >
             <FileTabs />
           </Grid>
         </Grid>

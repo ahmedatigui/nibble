@@ -11,7 +11,10 @@ export interface httpRequestConfigType {
 
 export interface httpResponseConfigType {
   status: string;
-  data: object | null | undefined;
+  data: {
+    body: any | null | undefined;
+    headers: any | null | undefined;
+  };
   error: unknown | null | undefined;
 }
 

@@ -7,7 +7,7 @@ import CodeMirror from "@uiw/react-codemirror";
 import { json } from "@codemirror/lang-json";
 import { xml } from "@codemirror/lang-xml";
 import { html } from "@codemirror/lang-html";
-// import { yaml } from "@nicktomlin/codemirror-lang-yaml-lite";
+import { yaml } from "@codemirror/lang-yaml";
 import { solarizedLight, solarizedDark } from "@uiw/codemirror-theme-solarized";
 
 // Utils
@@ -24,10 +24,7 @@ export function Editor({ tab }: { tab: string }) {
     APIRequestDataMapAtom,
   );
   const [value, setValue] = useState(APIRequestDataMap[tab].request.body);
-  const [lang, setLang] = useState<string>(
-    getLanguageFromMimeType(APIRequestDataMap[tab].request.headers[0].value) ??
-      "json",
-  );
+  const [lang, setLang] = useState<string>();
 
   const isLight = APIRequestDataMap[tab].style.theme === "light";
 
@@ -35,13 +32,16 @@ export function Editor({ tab }: { tab: string }) {
     const ind = APIRequestDataMap[tab].request.headers.findIndex(
       (item: keyValueAtomType, i: number) => item.key === "Content-Type",
     );
-
-    setLang(
-      getLanguageFromMimeType(
-        APIRequestDataMap[tab].request.headers[ind].value,
-      ),
-    );
-    // Optimize update only when the conten-type headers is changed
+    console.log("INDE", ind);
+    if (ind >= 0) {
+      setLang(
+        getLanguageFromMimeType(
+          APIRequestDataMap[tab].request.headers[ind].value,
+        ),
+      );
+    } else {
+      setLang("json");
+    }
   }, [APIRequestDataMap[tab].request.headers]);
 
   const onChange = useCallback((val: string) => {
@@ -59,7 +59,7 @@ export function Editor({ tab }: { tab: string }) {
       case "json":
         return json();
       case "yaml":
-        return [];
+        return yaml();
       case "html":
         return html();
       case "xml":
@@ -79,7 +79,7 @@ export function Editor({ tab }: { tab: string }) {
         readOnly={false}
         //height="100%"
         theme={isLight ? solarizedLight : solarizedDark}
-        extensions={[getMode(lang)]}
+        extensions={[getMode(lang!)]}
         onChange={onChange}
       />
     </div>

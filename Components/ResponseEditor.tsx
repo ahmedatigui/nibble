@@ -47,7 +47,7 @@ export function Editor({ tab }: { tab: string }) {
 
   useEffect((): void => {
     const data =
-      APIRequestDataMap[tab].response.httpResponse.data ??
+      APIRequestDataMap[tab].response.httpResponse.data?.body ??
       APIRequestDataMap[tab].response.statusText;
     setValue(JSON.stringify(data, null, "\n"));
   }, [APIRequestDataMap[tab].response.httpResponse.data]);

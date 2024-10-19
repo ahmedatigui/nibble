@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { useAtom } from "jotai";
 import { produce } from "immer";
 
@@ -35,8 +35,17 @@ export default function ApiRequestPanel({ tab }: { tab: string }) {
   const [APIRequestDataMap, setAPIRequestDataMap] = useAtom(
     APIRequestDataMapAtom,
   );
+  const inputErrorRef = useRef<HTMLDivElement | null>(null);
 
   async function handleSubmit() {
+    try {
+      new URL(APIRequestDataMap[tab].url);
+      if (inputErrorRef.current) inputErrorRef.current.style.display = "none";
+    } catch (e) {
+      if (inputErrorRef.current) inputErrorRef.current.style.display = "block";
+      return false;
+    }
+
     const readyParams = APIRequestDataMap[tab].request.params
       .filter(
         (list: keyValueAtomType) =>
@@ -69,10 +78,11 @@ export default function ApiRequestPanel({ tab }: { tab: string }) {
       );
 
       startTime = performance.now();
-      // console.log("APIRequestDataMap: ", APIRequestDataMap);
+      //console.log("APIRequestDataMap: ", APIRequestDataMap);
       const response: any = await createApiRequestFunction({
         apiURL: APIRequestDataMap[tab].url,
         httpMethod: APIRequestDataMap[tab].method,
+        data: APIRequestDataMap[tab].request.body,
         headers: readyHeaders,
         params: readyParams,
       });
@@ -122,7 +132,10 @@ export default function ApiRequestPanel({ tab }: { tab: string }) {
 
   return (
     <>
-      <Grid columns="1fr auto" gap="4">
+      <div ref={inputErrorRef} className="input-error">
+        Invalid URL! (https://example.com or http://example.com)
+      </div>
+      <div className="action-panel">
         <Grid columns="auto 1fr auto" gap="2">
           <SelectDemo tab={tab} />
           <TextField.Root>
@@ -139,16 +152,33 @@ export default function ApiRequestPanel({ tab }: { tab: string }) {
               }}
             />
           </TextField.Root>
-          <Button size="3" onClick={() => handleSubmit()}>
+          <Button
+            size="3"
+            onClick={() => handleSubmit()}
+            disabled={
+              APIRequestDataMap[tab].response.httpResponse.status === "loading"
+            }
+          >
             <PaperPlaneIcon />
           </Button>
         </Grid>
-        <Flex direction="row" justify="between" align="center" gap="2" px="4">
+        <Flex
+          direction="row"
+          justify="center"
+          align="center"
+          gap="2"
+          wrap="nowrap"
+          className="sm:none"
+        >
           <Text size="3" align="center">
-            {APIRequestDataMap[tab].response.statusCode ?? "-"}
+            {APIRequestDataMap[tab].response.httpResponse.status === "hasData"
+              ? APIRequestDataMap[tab].response.statusCode
+              : "-"}
           </Text>
           <Text size="3" align="center">
             {" | "}
+          </Text>
+          <Text size="3" align="center">
             {APIRequestDataMap[tab]?.response?.headers &&
             APIRequestDataMap[tab]?.response?.headers["content-length"]
               ? `${Number(
@@ -159,13 +189,15 @@ export default function ApiRequestPanel({ tab }: { tab: string }) {
           </Text>
           <Text size="3" align="center">
             {" | "}
+          </Text>
+          <Text size="3" align="center">
             {APIRequestDataMap[tab].response.httpResponse.status === "hasData"
-              ? `${APIRequestDataMap[tab].timing / 1000}s`
+              ? `${Number(APIRequestDataMap[tab].timing / 1000).toFixed(2)}s`
               : "-"}
           </Text>
         </Flex>
-      </Grid>
-      <Grid columns="1fr 1fr" gap="4">
+      </div>
+      <div className="config-panels">
         <div className="tabby1">
           <Tabs.Root defaultValue="tab1">
             <Tabs.List aria-label="Manage your account">
@@ -210,7 +242,7 @@ export default function ApiRequestPanel({ tab }: { tab: string }) {
             </Tabs.Content>
           </Tabs.Root>
         </div>
-      </Grid>
+      </div>
     </>
   );
 }

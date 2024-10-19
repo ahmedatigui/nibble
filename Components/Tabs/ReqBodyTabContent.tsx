@@ -20,6 +20,9 @@ export default function ReqBodyTabContent({ tab }: { tab: string }) {
   const options = HTTP_verbs.map((verb) => {
     return { label: verb, value: verb };
   });
+  const contentType = APIRequestDataMap[tab].request.headers.findIndex(
+    (item: keyValueAtomType, i: number) => item.key === "Content-Type",
+  );
 
   const handleOnValueChange = (lang: string) => {
     setAPIRequestDataMap(
@@ -44,14 +47,18 @@ export default function ReqBodyTabContent({ tab }: { tab: string }) {
   };
 
   return (
-    <Box className="playground-container">
+    <Box className="req-body-container">
       <Select.Root
         defaultValue={getLanguageFromMimeType(
-          APIRequestDataMap[tab].request.headers[0].value,
+          APIRequestDataMap[tab].request.headers[contentType]?.value ??
+            "application/json",
         )}
         onValueChange={(value: string) => handleOnValueChange(value)}
       >
-        <Select.Trigger className="SelectTrigger toggle" aria-label="Food" />
+        <Select.Trigger
+          className="select-component SelectTrigger toggle"
+          aria-label="Food"
+        />
 
         <Select.Content className="SelectContent listbox">
           {options.map((verb) => (
@@ -65,7 +72,7 @@ export default function ReqBodyTabContent({ tab }: { tab: string }) {
           ))}
         </Select.Content>
       </Select.Root>
-      <Box className="playground-container">
+      <Box className="playground-container keyValueListContainer">
         <Editor tab={tab} />
       </Box>
     </Box>

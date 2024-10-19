@@ -16,8 +16,8 @@ export default function ResBodyRawTabContent({ tab }: { tab: string }) {
       {APIRequestDataMap[tab].response.httpResponse.status === "hasData" ? (
         <Editor tab={tab} />
       ) : (
-        `${APIRequestDataMap[tab].response.httpResponse.error}` ??
-        `${APIRequestDataMap[tab].response.httpResponse.status}`
+        (`${APIRequestDataMap[tab].response.httpResponse.error}` ??
+        `${APIRequestDataMap[tab].response.httpResponse.status}`)
       )}
     </Grid>
   );

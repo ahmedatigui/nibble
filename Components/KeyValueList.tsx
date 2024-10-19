@@ -139,6 +139,8 @@ function KeyValueList({
           }
         }),
       );
+      console.log("PARAMS: ", APIRequestDataMap[tab].request.params.length);
+      if (APIRequestDataMap[tab].request.params.length === 1) addItem();
     } else {
       setAPIRequestDataMap((prevState) =>
         produce(prevState, (draftState: Draft<APIRequestDataMapType>) => {
@@ -147,6 +149,8 @@ function KeyValueList({
           }
         }),
       );
+      console.log("HEADERS: ", APIRequestDataMap[tab].request.headers.length);
+      if (APIRequestDataMap[tab].request.headers.length === 1) addItem();
     }
   };
 

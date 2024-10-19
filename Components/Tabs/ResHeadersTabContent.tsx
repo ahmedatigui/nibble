@@ -13,18 +13,18 @@ export default function ResHeadersTabContent({
   APIRequestDataMap: APIRequestDataMapType;
   tab: string;
 }) {
-  const response = APIRequestDataMap[`${tab}`].response;
-  const headerKeys = response.headers && Object.keys(response.headers);
+  const response = APIRequestDataMap[`${tab}`].response.httpResponse.data;
+  const headerKeys = response?.headers && Object.keys(response?.headers);
 
   return (
     <Box className="keyValueListContainer">
-      {response.headers ? (
+      {response?.headers ? (
         <Table.Root>
           <Table.Body>
             {headerKeys.map((key: string, ind: number) => (
               <Table.Row key={ind}>
                 <Table.Cell>{key}</Table.Cell>
-                <Table.Cell>{response.headers[key]}</Table.Cell>
+                <Table.Cell>{response?.headers[key]}</Table.Cell>
               </Table.Row>
             ))}
           </Table.Body>
