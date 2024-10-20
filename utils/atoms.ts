@@ -18,7 +18,10 @@ export const httpRequestConfigAtom = atom<httpRequestConfigType>({
 
 export const httpResponseConfigAtom = atom<httpResponseConfigType>({
   status: "idle" || "loading" || "hasData" || "hasError",
-  data: null,
+  data: {
+    body: null,
+    headers: null,
+  },
   error: null,
 });
 
@@ -65,7 +68,14 @@ export const APIRequestDataMapAtom = atomWithStorage<APIRequestDataMapType>(
         body: "// Hello, World!",
       },
       response: {
-        httpResponse: { status: "idle", data: null, error: null },
+        httpResponse: {
+          status: "idle",
+          data: {
+            body: null,
+            headers: null,
+          },
+          error: null 
+        },
         typed: null,
         raw: null,
         headers: null,

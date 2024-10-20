@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+/*import React, { useState, useEffect, useRef } from "react";
 import { NodeApi, NodeRendererProps, Tree, TreeApi } from "react-arborist";
 import { useAtom } from "jotai";
 import { v4 as uuidV4 } from "uuid";
@@ -106,7 +106,7 @@ function Node({
   style,
   dragHandle,
 }: NodeRendererProps<FileManagerDataType>) {
-  /* This node instance can do many things. See the API reference. */
+  // This node instance can do many things. See the API reference.
   const [currentActiveLeaf, setCurrentActiveLeaf] = useAtom(
     currentActiveLeafAtom,
   );
@@ -163,8 +163,8 @@ function Node({
       </div>
     </>
   );
-}
-
+}*/
+/*
 function Input({
   node,
   tree,
@@ -202,8 +202,7 @@ function Input({
           ]);
           setAPIRequestDataMap((currentAPIRequestDataMap) =>
             produce(currentAPIRequestDataMap, (draftAPIRequestDataMap) => {
-              draftAPIRequestDataMap[node.data.id].tab.name =
-                e.currentTarget.value;
+              draftAPIRequestDataMap[node.data.id].tab.name = e.currentTarget.value;
             }),
           );
         } else {
@@ -211,7 +210,7 @@ function Input({
             ...current,
             { id: node.data.id, name: e.currentTarget.value },
           ]);
-          /*setAPIRequestDataMap((prevState) => ({
+          setAPIRequestDataMap((prevState) => ({
             ...prevState,
             [`${node.data.id}`]: {
               method: "GET",
@@ -236,7 +235,7 @@ function Input({
                 id: `${node.data.id}`,
               },
             },
-          }));*/
+          }));
         }
         node.submit(e.currentTarget.value);
         setCurrentActiveLeaf(`${node.data.id}`);
@@ -257,8 +256,8 @@ function Input({
       onKeyDown={handleKeyDown}
     />
   );
-}
-
+}*/
+/*
 function PrefixIcon({ node }: { node: NodeApi<FileManagerDataType> }) {
   if (node.isLeaf) return "📄 ";
   return (
@@ -390,4 +389,4 @@ const DropdownMenuFolder = ({
       </DropdownMenu.Portal>
     </DropdownMenu.Root>
   );
-};
+};*/
